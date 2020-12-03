@@ -1,11 +1,11 @@
-description: >
-  This is a sample executor using Docker and Node.
-docker:
-  - image: 'cimg/node:<<parameters.tag>>'
+description: Preconfigured CircleCI Python image.
 parameters:
   tag:
-    default: lts
-    description: >
-      Pick a specific circleci/node image variant:
-      https://hub.docker.com/r/cimg/node/tags
     type: string
+    default: "3.7.6"
+    description: The `circleci/python` Docker image version tag.
+docker:
+  - image: circleci/python:<< parameters.tag >>
+    environment:
+      PIPENV_VENV_IN_PROJECT: true
+working_directory: "~/project"
