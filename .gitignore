@@ -1,2 +1,11 @@
-# orb.yml is "packed" from source, and not published directly from the repository.
+# CircleCI
 orb.yml
+
+# IDE
+.idea
+.vscode
+
+# MacOS
+.DS_Store
+.localized
+*~
