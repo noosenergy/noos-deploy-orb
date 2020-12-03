@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: test-chart
+  namespace: {{ .Release.Namespace }}
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: test-chart
+  template:
+    metadata:
+      labels:
+        app: test-chart
+    spec:
+      containers:
+
+        - name: busybox
+          image: "{{ .Values.server.image.repository }}:{{ .Values.server.image.tag }}"
