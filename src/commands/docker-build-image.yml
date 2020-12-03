@@ -1,0 +1,30 @@
+description: Build, tag and push Docker image to remote registry [AWS ECR].
+parameters:
+  registry-provider:
+    type: enum
+    enum: ["aws", "docker"]
+    default: "aws"
+    description: Docker registry provider.
+  image-context:
+    type: string
+    default: "."
+    description: Docker local build context.
+  image-name:
+    type: string
+    default: "noos-prod"
+    description: Docker local image name.
+  image-tag:
+    type: string
+    default: "test"
+    description: Docker remote image tag.
+steps:
+  - install-cli
+  - docker-install-cli
+  - docker-configure-repo:
+      registry-provider: << parameters.registry-provider >>
+  - run:
+      name: Build Docker image
+      command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+  - run:
+      name: Tag and push Docker image
+      command: noosci docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>

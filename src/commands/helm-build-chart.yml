@@ -1,0 +1,13 @@
+description: Build and push Helm chart to remote registry [Chart Museum].
+parameters:
+  chart-directory:
+    type: string
+    default: "./helm/chart"
+    description: Unpackaged Helm chart directory.
+steps:
+  - install-cli
+  - helm-install-cli
+  - helm-configure-repo
+  - run:
+      name: Build and push Helm charts
+      command: noosci helm.push --chart < parameters.chart-directory >>

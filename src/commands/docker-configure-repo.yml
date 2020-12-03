@@ -1,0 +1,29 @@
+description: Configure Docker remote registry [AWS ECR or Dockerhub].
+
+parameters:
+  registry-provider:
+    type: enum
+    enum: ["aws", "docker"]
+    default: "aws"
+    description: Docker registry provider.
+
+steps:
+  - when:
+      condition:
+        equal: [aws, << parameters.registry-provider >>]
+      steps:
+        - aws-cli/install
+        - run:
+            name: Configure AWS ECR registry
+            command: noosci docker.login --user AWS
+            environment:
+              NOOSCI_DOCKER_REPO: $AWS_ECR_URL
+  - when:
+      condition:
+        equal: [docker, << parameters.registry-provider >>]
+      steps:
+        - run:
+            name: Configure Dockerhub registry
+            command: noosci docker.login --user noosenergy
+            environment:
+              NOOSCI_DOCKER_TOKEN: $DOCKERHUB_TOKEN

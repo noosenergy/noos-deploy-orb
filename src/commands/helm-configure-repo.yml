@@ -1,0 +1,11 @@
+description: Configure Helm remote registry [Chart Museum].
+steps:
+  - run:
+      name: Provision Helm client
+      command: noosci helm.install
+  - run:
+      name: Configure Helm registry
+      command: noosci helm.login
+      environment:
+        NOOSCI_HELM_URL: $CHARTMUSEUM_URL
+        NOOSCI_HELM_TOKEN: $CHARTMUSEUM_TOKEN
