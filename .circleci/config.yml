@@ -111,102 +111,63 @@ jobs:
 workflows:
 
   # This workflow will run on every commit
-  lint-approve-build:
+  lint-build:
     unless: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - orb-tools/lint:
-          filters:
-            tags:
-              only: /.*/
-      - orb-tools/pack:
-          filters:
-            tags:
-              only: /.*/
+      - orb-tools/lint
+      - orb-tools/pack
       - approve-for-testing:
           type: approval
           requires:
             - orb-tools/pack
             - orb-tools/lint
-          filters:
-            tags:
-              only: /.*/
-
       # Release dev version of orb, for testing & possible publishing.
       - orb-tools/publish-dev:
           orb-name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
           requires:
             - approve-for-testing
-          filters:
-            tags:
-              only: /.*/
-
       # Trigger an integration workflow to test the version of your orb.
       - orb-tools/trigger-integration-tests-workflow:
           context: CIRCLECI_ORB_SHARED
           requires:
             - orb-tools/publish-dev
-          filters:
-            tags:
-              only: /.*/
 
   # This workflow will only be triggered by the "trigger-integration-tests-workflow" job.
-  test-publish:
+  test:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - integration-test_install-cli:
-          filters:
-            tags:
-              only: /.*/
-      - integration-test_docker-install-cli:
-          filters:
-            tags:
-              only: /.*/
+      - integration-test_install-cli
+      - integration-test_docker-install-cli
       - integration-test_docker-configure-repo-aws:
           context: CIRCLECI_SHARED
-          filters:
-            tags:
-              only: /.*/
       - integration-test_docker-configure-repo-docker:
           context: CIRCLECI_SHARED
-          filters:
-            tags:
-              only: /.*/
-      - integration-test_helm-install-cli:
-          filters:
-            tags:
-              only: /.*/
+      - integration-test_helm-install-cli
       - integration-test_helm-configure-repo:
           context: CIRCLECI_SHARED
-          filters:
-            tags:
-              only: /.*/
-      - integration-test_helm-lint-chart:
-          filters:
-            tags:
-              only: /.*/
-      - integration-test_py-install-venv:
-          filters:
-            tags:
-              only: /.*/
+      - integration-test_helm-lint-chart
+      - integration-test_py-install-venv
 
-      # Promote dev to prod version based onto a git tag version.
+  # Promote dev to prod version based onto a git tag version.
+  publish:
+    jobs:
+      - approve-for-publishing:
+          type: approval
+          filters:
+            tags:
+              # ONLY git tag compliant format: e.g. `major-release-1.0.0`
+              only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
+            branches:
+              ignore: /.*/
       - orb-tools/dev-promote-prod-from-git-tag:
           orb-name: noosenergy/noos-ci
           add-pr-comment: false
           context: CIRCLECI_ORB_SHARED
           requires:
-            - integration-test_install-cli
-            - integration-test_docker-install-cli
-            - integration-test_docker-configure-repo-aws
-            - integration-test_docker-configure-repo-docker
-            - integration-test_helm-install-cli
-            - integration-test_helm-configure-repo
-            - integration-test_helm-lint-chart
-            - integration-test_py-install-venv
+            - approve-for-publishing
           filters:
             tags:
-              # ONLY git tag compliant format: e.g. `major-release-1.0.0`
               only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
             branches:
               ignore: /.*/
