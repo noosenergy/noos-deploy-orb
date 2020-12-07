@@ -6,11 +6,9 @@ Custom CircleCI Orb for working with Docker and Helm CI/CD pipelines.
 
 ## Resources
 
-[CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/noosenergy/noos-deploy-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
+[CI/CD Noos Deploy Orb](https://circleci.com/developer/orbs/orb/noosenergy/noos-ci) - The official registry page of this orb for all versions, executors, commands, and jobs described.
 
-[CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.
-
-[CI/CD Noos Deploy SDK](https://github.com/noosenergy/noos-deploy) - Software development kit for managing CI/CD pipelines, installed onto such a CircleCI Orb.
+[CI/CD Noos Deploy SDK](https://pypi.org/project/noos-ci) - Software development kit for managing CI/CD pipelines, shipped with this orb.
 
 ### How to Contribute
 
@@ -20,7 +18,7 @@ We welcome [issues](https://github.com/noosenergy/noos-deploy-orb/issues) to and
 * Create and push a branch with your new features.
 * When ready to publish a new production version, create a Pull Request from your _feature branch_ to `master`.
 * Request manual approval to run the integration tests against your _feature branch_.
-* Once your features have been merged, the final merge commit onto the `master` branch should be tagged as `<increment>-release-<version>` where:
+* Once your features have been merged, the final merge commit onto the `master` branch should be tagged as `<increment>-release-v<version>` where:
 
 | increment | version|
 | ----------| -----------|

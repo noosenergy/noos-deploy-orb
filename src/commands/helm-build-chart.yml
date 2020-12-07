@@ -10,4 +10,4 @@ steps:
   - helm-configure-repo
   - run:
       name: Build and push Helm charts
-      command: noosci helm.push --chart < parameters.chart-directory >>
+      command: noosci helm.push --chart << parameters.chart-directory >>

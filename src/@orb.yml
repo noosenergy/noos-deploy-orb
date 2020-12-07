@@ -3,7 +3,7 @@ version: 2.1
 description: Noos Energy CircleCI Orb for CI/CD pipelines
 
 display:
-  home_url: https://circleci.com/developer/orbs/orb/noosenergy/noos-deploy-orb
+  home_url: https://circleci.com/developer/orbs/orb/noosenergy/noos-ci
   source_url: https://github.com/noosenergy/noos-deploy-orb
 
 orbs:
