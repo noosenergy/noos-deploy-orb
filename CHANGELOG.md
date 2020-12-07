@@ -14,5 +14,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Enforce git tag filtering on all CircleCI jobs.
 
 ## [0.0.3] - 2020-12-07
-### Added
- - Enforce git tag filtering on all CircleCI jobs.
+### Changed
+ - Split testing from publishing workflow.
+
+ ## [0.1.1] - 2020-12-07
+### Changed
+ - Fix missing token on Helm build job.
