@@ -1,0 +1,29 @@
+description: Spinup Python virtual environment [pipenv].
+parameters:
+  configure-git:
+    type: boolean
+    default: false
+    description: Whether to setup git credentials.
+steps:
+  - restore_cache:
+      keys:
+        - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+        - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+        - virtualenv-{{ .Environment.CACHE_VERSION }}-
+  - when:
+      condition: << parameters.configure-git >>
+      steps:
+        - run:
+            name: Configure github access
+            command: noosci git.config
+            environment:
+              NOOSCI_GIT_TOKEN: $GITHUB_TOKEN
+  - run:
+      name: Install Python packages
+      command: |
+        pipenv sync --dev
+        pipenv clean
+  - save_cache:
+      key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+      paths:
+        - "./.venv"

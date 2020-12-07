@@ -1,19 +1,16 @@
-# Orb Project Template
+[![CircleCI](https://circleci.com/gh/noosenergy/noos-deploy-orb.svg?style=svg&circle-token=9f3de0b8378330e0e1ff6bb296f04e31eed67d77)](https://circleci.com/gh/noosenergy/noos-deploy-orb)
 
-[![CircleCI Build Status](https://circleci.com/gh/noosenergy/noos-deploy-orb.svg?style=shield "CircleCI Build Status")](https://circleci.com/gh/noosenergy/noos-deploy-orb) [![CircleCI Orb Version](https://img.shields.io/badge/endpoint.svg?url=https://badges.circleci.io/orb/noosenergy/noos-ci)](https://circleci.com/orbs/registry/orb/noosenergy/noos-ci) [![GitHub License](https://img.shields.io/badge/license-MIT-lightgrey.svg)](https://raw.githubusercontent.com/noosenergy/noos-deploy-orb/master/LICENSE) [![CircleCI Community](https://img.shields.io/badge/community-CircleCI%20Discuss-343434.svg)](https://discuss.circleci.com/c/ecosystem/orbs)
+# Noos Deploy Orb
 
-
-
-A starter template for orb projects. Build, test, and publish orbs automatically on CircleCI with [Orb-Tools](https://circleci.com/orbs/registry/orb/circleci/orb-tools).
-
-Additional READMEs are available in each directory.
-
-
+Custom CircleCI Orb for working with Docker and Helm CI/CD pipelines.
 
 ## Resources
 
 [CircleCI Orb Registry Page](https://circleci.com/orbs/registry/orb/noosenergy/noos-deploy-orb) - The official registry page of this orb for all versions, executors, commands, and jobs described.
+
 [CircleCI Orb Docs](https://circleci.com/docs/2.0/orb-intro/#section=configuration) - Docs for using and creating CircleCI Orbs.
+
+[CI/CD Noos Deploy SDK](https://github.com/noosenergy/noos-deploy) - Software development kit for managing CI/CD pipelines, installed onto such a CircleCI Orb.
 
 ### How to Contribute
 
@@ -21,21 +18,12 @@ We welcome [issues](https://github.com/noosenergy/noos-deploy-orb/issues) to and
 
 ### How to Publish
 * Create and push a branch with your new features.
-* When ready to publish a new production version, create a Pull Request from fore _feature branch_ to `master`.
-* The title of the pull request must contain a special semver tag: `[semver:<segement>]` where `<segment>` is replaced by one of the following values.
+* When ready to publish a new production version, create a Pull Request from your _feature branch_ to `master`.
+* Request manual approval to run the integration tests against your _feature branch_.
+* Once your features have been merged, the final merge commit onto the `master` branch should be tagged as `<increment>-release-<version>` where:
 
-| Increment | Description|
+| increment | version|
 | ----------| -----------|
-| major     | Issue a 1.0.0 incremented release|
-| minor     | Issue a x.1.0 incremented release|
-| patch     | Issue a x.x.1 incremented release|
-| skip      | Do not issue a release|
-
-Example: `[semver:major]`
-
-* Squash and merge. Ensure the semver tag is preserved and entered as a part of the commit message.
-* On merge, after manual approval, the orb will automatically be published to the Orb Registry.
-
-
-For further questions/comments about this or other orbs, visit the Orb Category of [CircleCI Discuss](https://discuss.circleci.com/c/orbs).
-
+| major     | 1.0.0 incremented release|
+| minor     | x.1.0 incremented release|
+| patch     | x.x.1 incremented release|

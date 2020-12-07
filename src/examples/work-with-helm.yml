@@ -1,0 +1,28 @@
+description: Build and publish a Helm chart to remote registry.
+usage:
+  version: 2.1
+  orbs:
+    noos: noosenergy/noos-ci@0.0.1
+  jobs:
+    lint-chart:
+      executor: noos/default
+      steps:
+        - checkout
+        - noos/helm-lint-chart:
+            chart-directory: ./helm/chart
+    build-chart:
+      executor: noos/default
+      steps:
+        - checkout
+        - noos/helm-build-chart:
+            chart-directory: ./helm/chart
+  workflows:
+    lint-build:
+      jobs:
+        - lint-chart
+        - build-chart:
+            requires:
+              - lint-chart
+            filters:
+              branches:
+                only: master
