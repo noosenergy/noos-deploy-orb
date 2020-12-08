@@ -1,11 +1,15 @@
 description: Preconfigured CircleCI Python image.
+
 parameters:
   tag:
     type: string
     default: "3.7.6"
     description: The `circleci/python` Docker image version tag.
+
 docker:
   - image: circleci/python:<< parameters.tag >>
     environment:
+      POETRY_VIRTUALENVS_IN_PROJECT: true
       PIPENV_VENV_IN_PROJECT: true
+
 working_directory: "~/project"
