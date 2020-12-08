@@ -7,7 +7,7 @@ version: 2.1
 
 orbs:
 
-  noos: noosenergy/noos-ci@<<pipeline.parameters.dev-orb-version>>
+  noos-ci: noosenergy/noos-ci@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@10.0.3
 
 parameters:
@@ -27,78 +27,51 @@ parameters:
 
 jobs:
 
-  integration-test_install-cli:
-    executor: noos/default
+  integration-test_docker-build-image:
+    executor: noos-ci/default
     steps:
       - checkout
-      - noos/install-cli
-      - run:
-          name: Print noos-ci version
-          command: noosci --version
-
-  integration-test_docker-install-cli:
-    executor: noos/default
-    steps:
-      - checkout
-      - noos/docker-install-cli
-      - run:
-          name: Print helm version
-          command: docker --version
-
-  integration-test_docker-configure-repo-aws:
-    executor: noos/default
-    steps:
-      - checkout
-      - noos/install-cli
-      - noos/docker-install-cli
-      - noos/docker-configure-repo:
-          registry-provider: aws
-
-  integration-test_docker-configure-repo-docker:
-    executor: noos/default
-    steps:
-      - checkout
-      - noos/install-cli
-      - noos/docker-install-cli
-      - noos/docker-configure-repo:
+      - noos-ci/docker-build-image:
           registry-provider: docker
-
-  integration-test_helm-install-cli:
-    executor: noos/default
-    steps:
-      - checkout
-      - noos/helm-install-cli
-      - run:
-          name: Print helm version
-          command: helm version --short
-
-  integration-test_helm-configure-repo:
-    executor: noos/default
-    steps:
-      - checkout
-      - noos/install-cli
-      - noos/helm-install-cli
-      - noos/helm-configure-repo
+          image-context: ./fixtures/docker
+          image-name: busybox
+          image-tag: ${CIRCLE_SHA1}
 
   integration-test_helm-lint-chart:
-    executor: noos/default
+    executor: noos-ci/default
     steps:
       - checkout
-      - noos/helm-lint-chart:
+      - noos-ci/helm-lint-chart:
           chart-directory: ./fixtures/helm
 
-  integration-test_py-install-venv:
-    executor: noos/default
+  integration-test_helm-build-chart:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/helm-build-chart:
+          chart-directory: ./fixtures/helm
+
+  integration-test_python-lint-package:
+    executor: noos-ci/default
     steps:
       - checkout
       - run:
-          name: Copy pip files over
-          command: cp -R ./fixtures/py/* .
-      - noos/py-install-venv:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-lint-package:
+          pkg-manager: pipenv
           configure-git: false
+
+  integration-test_python-test-package:
+    executor: noos-ci/default
+    steps:
+      - checkout
       - run:
-          name: Print pip packages
-          command: pipenv run pip list
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-test-package:
+          pkg-manager: pipenv
+          configure-git: false
 
 
 # -----------------
@@ -137,17 +110,13 @@ workflows:
   test:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
-      - integration-test_install-cli
-      - integration-test_docker-install-cli
-      - integration-test_docker-configure-repo-aws:
-          context: CIRCLECI_SHARED
-      - integration-test_docker-configure-repo-docker:
-          context: CIRCLECI_SHARED
-      - integration-test_helm-install-cli
-      - integration-test_helm-configure-repo:
+      - integration-test_docker-build-image:
           context: CIRCLECI_SHARED
       - integration-test_helm-lint-chart
-      - integration-test_py-install-venv
+      - integration-test_helm-build-chart:
+          context: CIRCLECI_SHARED
+      - integration-test_python-lint-package
+      - integration-test_python-test-package
 
   # Promote dev to prod version based onto a git tag version.
   publish:
