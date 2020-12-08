@@ -1,9 +1,11 @@
 description: Check compliance of Helm chart vs values.
+
 parameters:
   chart-directory:
     type: string
     default: "./helm/chart"
     description: Unpackaged Helm chart directory.
+
 steps:
   - install-cli
   - helm-install-cli

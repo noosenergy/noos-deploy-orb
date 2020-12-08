@@ -1,7 +1,8 @@
 description: Install locally noos-deploy sdk.
+
 steps:
   - run:
       name: Install noos-ci package.
       command: pip install noos-ci==$NOOSCI_VERSION
       environment:
-        NOOSCI_VERSION: 0.0.1a4
+        NOOSCI_VERSION: 0.0.1a5
