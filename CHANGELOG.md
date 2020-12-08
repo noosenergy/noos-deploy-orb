@@ -17,6 +17,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - Split testing from publishing workflow.
 
- ## [0.1.1] - 2020-12-07
+## [0.1.1] - 2020-12-07
 ### Changed
  - Fix missing token on Helm build job.
+
+## [0.1.2] - 2020-12-08
+### Added
+ - Common CI/CD tasks for basic Python workflows.
