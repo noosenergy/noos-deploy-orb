@@ -1,0 +1,23 @@
+description: Publish wheel distribution to PyPi [poetry ONLY].
+
+parameters:
+  pkg-manager:
+    type: enum
+    enum: ["pipenv", "poetry"]
+    default: "pipenv"
+    description: Which package management tool to use.
+  configure-git:
+    type: boolean
+    default: false
+    description: Whether to setup git credentials.
+
+steps:
+  - install-cli
+  - python-install-venv:
+      pkg-manager: << parameters.pkg-manager >>
+      configure-git: << parameters.configure-git >>
+  - run:
+      name: Publish Python wheel
+      command: noosci python.package --install << parameters.pkg-manager >>
+      environment:
+        NOOSCI_PYTHON_TOKEN: $PYPI_TOKEN

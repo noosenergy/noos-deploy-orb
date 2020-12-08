@@ -1,0 +1,21 @@
+description: Run Python linters [black, isort, pydoc, flake8, pypy].
+
+parameters:
+  pkg-manager:
+    type: enum
+    enum: ["pipenv", "poetry"]
+    default: "pipenv"
+    description: Which package management tool to use.
+  configure-git:
+    type: boolean
+    default: false
+    description: Whether to setup git credentials.
+
+steps:
+  - install-cli
+  - python-install-venv:
+      pkg-manager: << parameters.pkg-manager >>
+      configure-git: << parameters.configure-git >>
+  - run:
+      name: Run Python linters
+      command: noosci python.lint --install << parameters.pkg-manager >>
