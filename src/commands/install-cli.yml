@@ -5,4 +5,4 @@ steps:
       name: Install noos-ci package.
       command: pip install noos-ci==$NOOSCI_VERSION
       environment:
-        NOOSCI_VERSION: 0.0.1a5
+        NOOSCI_VERSION: 0.0.2
