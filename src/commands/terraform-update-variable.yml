@@ -1,0 +1,22 @@
+description: Update a variable value for a workspace in Terraform Cloud.
+
+parameters:
+  workspace:
+    type: string
+    description: Terraform Cloud workspace.
+  variable-name:
+    type: string
+    description: Terraform Cloud variable name.
+  variable-value:
+    type: string
+    description: Terraform Cloud variable value.
+
+steps:
+  - install-cli
+  - terraform-install-cli
+  - run:
+      name: Update a Terraform variable
+      command: noosci terraform.update --workspace << parameters.workspace >> --variable << parameters.variable-name >> --value << parameters.variable-value >>
+      environment:
+        NOOSCI_TERRAFORM_ORGANISATION: $TERRAFORM_USER
+        NOOSCI_TERRAFORM_TOKEN: $TERRAFORM_TOKEN

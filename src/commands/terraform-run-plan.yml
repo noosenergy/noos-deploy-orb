@@ -1,0 +1,19 @@
+description: Run a plan for a workspace in Terraform Cloud.
+
+parameters:
+  workspace:
+    type: string
+    description: Terraform Cloud workspace.
+  plan-message:
+    type: string
+    description: Terraform Cloud plan message.
+
+steps:
+  - install-cli
+  - terraform-install-cli
+  - run:
+      name: Run a Terraform plan
+      command: noosci terraform.run --workspace << parameters.workspace >> --message << parameters.plan-message >>
+      environment:
+        NOOSCI_TERRAFORM_ORGANISATION: $TERRAFORM_USER
+        NOOSCI_TERRAFORM_TOKEN: $TERRAFORM_TOKEN
