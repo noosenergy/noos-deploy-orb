@@ -12,11 +12,9 @@ parameters:
     description: Docker local build context.
   image-name:
     type: string
-    default: "noos-prod"
     description: Docker local image name.
   image-tag:
     type: string
-    default: "test"
     description: Docker remote image tag.
 
 steps:
