@@ -20,4 +20,5 @@ steps:
       name: Publish Python wheel
       command: noosci python.package --install << parameters.pkg-manager >>
       environment:
+        NOOSCI_PYTHON_USER: $PYPI_USER
         NOOSCI_PYTHON_TOKEN: $PYPI_TOKEN

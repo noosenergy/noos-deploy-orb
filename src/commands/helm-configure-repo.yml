@@ -9,4 +9,5 @@ steps:
       command: noosci helm.login
       environment:
         NOOSCI_HELM_URL: $CHARTMUSEUM_URL
+        NOOSCI_HELM_USER: $CHARTMUSEUM_USER
         NOOSCI_HELM_TOKEN: $CHARTMUSEUM_TOKEN
