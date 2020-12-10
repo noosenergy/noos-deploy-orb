@@ -27,6 +27,28 @@ parameters:
 
 jobs:
 
+  integration-test_python-lint-package:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-lint-package:
+          pkg-manager: pipenv
+          configure-git: false
+
+  integration-test_python-test-package:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-test-package:
+          pkg-manager: pipenv
+          configure-git: false
+
   integration-test_docker-build-image:
     executor: noos-ci/default
     steps:
@@ -51,27 +73,17 @@ jobs:
       - noos-ci/helm-build-chart:
           chart-directory: ./fixtures/helm
 
-  integration-test_python-lint-package:
+  integration-test_terraform-run-plan:
     executor: noos-ci/default
     steps:
       - checkout
-      - run:
-          name: Copy fixtures files over
-          command: cp -R ./fixtures/python/* .
-      - noos-ci/python-lint-package:
-          pkg-manager: pipenv
-          configure-git: false
-
-  integration-test_python-test-package:
-    executor: noos-ci/default
-    steps:
-      - checkout
-      - run:
-          name: Copy fixtures files over
-          command: cp -R ./fixtures/python/* .
-      - noos-ci/python-test-package:
-          pkg-manager: pipenv
-          configure-git: false
+      - noos-ci/terraform-update-variable:
+          workspace: noos-prod
+          variable-name: circleci_orb_variable
+          variable-value: test_value
+      - noos-ci/terraform-run-plan:
+          workspace: noos-prod
+          plan-message: ${CIRCLE_BUILD_URL}
 
 
 # -----------------
@@ -110,13 +122,15 @@ workflows:
   test:
     when: << pipeline.parameters.run-integration-tests >>
     jobs:
+      - integration-test_python-lint-package
+      - integration-test_python-test-package
       - integration-test_docker-build-image:
           context: CIRCLECI_SHARED
       - integration-test_helm-lint-chart
       - integration-test_helm-build-chart:
           context: CIRCLECI_SHARED
-      - integration-test_python-lint-package
-      - integration-test_python-test-package
+      - integration-test_terraform-run-plan:
+          context: NOOS_PROD_SHARED
 
   # Promote dev to prod version based onto a git tag version.
   publish:

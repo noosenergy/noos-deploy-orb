@@ -24,6 +24,7 @@ steps:
       steps:
         - run:
             name: Configure Dockerhub registry
-            command: noosci docker.login --user noosenergy
+            command: noosci docker.login
             environment:
+              NOOSCI_DOCKER_USER: $DOCKERHUB_USER
               NOOSCI_DOCKER_TOKEN: $DOCKERHUB_TOKEN

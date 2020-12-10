@@ -1,18 +1,18 @@
-[![CircleCI](https://circleci.com/gh/noosenergy/noos-deploy-orb.svg?style=svg&circle-token=9f3de0b8378330e0e1ff6bb296f04e31eed67d77)](https://circleci.com/gh/noosenergy/noos-deploy-orb)
+[![CircleCI](https://circleci.com/gh/noosenergy/noos-circleci-orb.svg?style=svg&circle-token=9f3de0b8378330e0e1ff6bb296f04e31eed67d77)](https://circleci.com/gh/noosenergy/noos-circleci-orb)
 
-# Noos Deploy Orb
+# Noos CircleCI Orb
 
 Custom CircleCI Orb for working with Docker and Helm CI/CD pipelines.
 
 ## Resources
 
-[CI/CD Noos Deploy Orb](https://circleci.com/developer/orbs/orb/noosenergy/noos-ci) - The official registry page of this orb for all versions, executors, commands, and jobs described.
+[CI/CD Noos CircleCI Orb](https://circleci.com/developer/orbs/orb/noosenergy/noos-ci) - The official registry page of this orb for all versions, executors, commands, and jobs described.
 
 [CI/CD Noos Deploy SDK](https://pypi.org/project/noos-ci) - Software development kit for managing CI/CD pipelines, shipped with this orb.
 
 ### How to Contribute
 
-We welcome [issues](https://github.com/noosenergy/noos-deploy-orb/issues) to and [pull requests](https://github.com/noosenergy/noos-deploy-orb/pulls) against this repository!
+We welcome [issues](https://github.com/noosenergy/noos-circleci-orb/issues) to and [pull requests](https://github.com/noosenergy/noos-circleci-orb/pulls) against this repository!
 
 ### How to Publish
 * Create and push a branch with your new features.

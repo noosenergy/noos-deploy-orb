@@ -12,11 +12,9 @@ parameters:
     description: Docker local build context.
   image-name:
     type: string
-    default: "noos-prod"
     description: Docker local image name.
   image-tag:
     type: string
-    default: "test"
     description: Docker remote image tag.
 
 steps:
@@ -42,4 +40,6 @@ steps:
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosci docker.push --repo noosenergy --name << parameters.image-name >> --tag << parameters.image-tag >>
+            command: noosci docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
+            environment:
+              NOOSCI_DOCKER_REPO: $DOCKERHUB_USER
