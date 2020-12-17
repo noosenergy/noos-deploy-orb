@@ -5,4 +5,4 @@ steps:
       name: Install noos-tf package.
       command: pip install noos-tf==$NOOSTF_VERSION
       environment:
-        NOOSTF_VERSION: 0.0.2
+        NOOSTF_VERSION: 0.0.3
