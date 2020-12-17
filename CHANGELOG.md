@@ -34,3 +34,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Standard example workflow with Python jobs.
 ### Changed
  - Pass build arguments into the Docker build job.
+
+## [0.1.5] - 2020-12-17
+### Changed
+ - Bump noos-ci CLI version to v0.0.4.
