@@ -1,8 +1,12 @@
 description: Update a variable and run a plan in Terraform Cloud.
+
 usage:
+
   version: 2.1
+
   orbs:
     noos-ci: noosenergy/noos-ci@0.0.1
+
   jobs:
     deploy-plan:
       executor: noos-ci/default
@@ -15,6 +19,7 @@ usage:
         - noos-ci/terraform-run-plan:
             workspace: myWorkspace
             plan-message: Test Terraform plan
+
   workflows:
     build:
       jobs:

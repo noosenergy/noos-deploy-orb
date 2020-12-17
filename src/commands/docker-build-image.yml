@@ -6,6 +6,10 @@ parameters:
     enum: ["aws", "docker"]
     default: "aws"
     description: Docker registry provider.
+  build-arg:
+    type: string
+    default: ""
+    description: Docker image build argument.
   image-context:
     type: string
     default: "."
@@ -22,9 +26,20 @@ steps:
   - docker-install-cli
   - docker-configure-repo:
       registry-provider: << parameters.registry-provider >>
-  - run:
-      name: Build Docker image
-      command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+  - when:
+      condition:
+        equal: ["", << parameters.build-arg >>]
+      steps:
+        - run:
+            name: Build Docker image
+            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+  - unless:
+      condition:
+        equal: ["", << parameters.build-arg >>]
+      steps:
+        - run:
+            name: Build Docker image
+            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >> --arg << parameters.build-arg >>
   - when:
       condition:
         equal: [aws, << parameters.registry-provider >>]

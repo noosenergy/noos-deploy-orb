@@ -1,8 +1,12 @@
 description: Build and publish a docker image to remote registry.
+
 usage:
+
   version: 2.1
+
   orbs:
     noos-ci: noosenergy/noos-ci@0.0.1
+
   jobs:
     build-image:
       executor: noos-ci/default
@@ -13,6 +17,7 @@ usage:
             image-context: .
             image-name: webserver
             image-tag: test
+
   workflows:
     build:
       jobs:
