@@ -8,4 +8,4 @@ display:
 
 orbs:
   aws-cli: circleci/aws-cli@1.3.1
-  helm-cli: circleci/helm@1.0.0
+  helm-cli: circleci/helm@1.1.2
