@@ -14,12 +14,15 @@ usage:
         - checkout
         - noos-ci/python-lint-package:
             pkg-manager: pipenv
+            configure-git: false
     test-package:
       executor: noos-ci/default
       steps:
         - checkout
         - noos-ci/python-test-package:
             pkg-manager: pipenv
+            configure-git: false
+            test-group: unit
 
   workflows:
     lint-test:
