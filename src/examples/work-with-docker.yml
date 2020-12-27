@@ -14,6 +14,7 @@ usage:
         - checkout
         - noos-ci/docker-build-image:
             registry-provider: aws
+            configure-git: false
             image-context: .
             image-name: webserver
             image-tag: test

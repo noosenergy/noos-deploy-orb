@@ -79,8 +79,8 @@ jobs:
       - checkout
       - noos-ci/terraform-update-variable:
           workspace: noos-prod
-          variable-name: circleci_orb_variable
-          variable-value: test_value
+          variable-name: noos_ci_integration_test
+          variable-value: ${CIRCLE_SHA1}
       - noos-ci/terraform-run-plan:
           workspace: noos-prod
           plan-message: ${CIRCLE_BUILD_URL}

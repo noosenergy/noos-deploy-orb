@@ -13,6 +13,14 @@ parameters:
 
 steps:
   - when:
+      condition: << parameters.configure-git >>
+      steps:
+        - run:
+            name: Configure Github access
+            command: noosci git.config
+            environment:
+              NOOSCI_GIT_TOKEN: $GITHUB_TOKEN
+  - when:
       condition:
         equal: [pipenv, << parameters.pkg-manager >>]
       steps:
@@ -21,14 +29,6 @@ steps:
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
-        - when:
-            condition: << parameters.configure-git >>
-            steps:
-              - run:
-                  name: Configure Github access
-                  command: noosci git.config
-                  environment:
-                    NOOSCI_GIT_TOKEN: $GITHUB_TOKEN
         - run:
             name: Install Python packages
             command: |
@@ -47,14 +47,6 @@ steps:
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
-        - when:
-            condition: << parameters.configure-git >>
-            steps:
-              - run:
-                  name: Configure Github access
-                  command: noosci git.config
-                  environment:
-                    NOOSCI_GIT_TOKEN: $GITHUB_TOKEN
         - run:
             name: Install Python packages
             command: poetry install

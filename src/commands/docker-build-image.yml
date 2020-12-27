@@ -6,10 +6,10 @@ parameters:
     enum: ["aws", "docker"]
     default: "aws"
     description: Docker registry provider.
-  build-arg:
-    type: string
-    default: ""
-    description: Docker image build argument.
+  configure-git:
+    type: boolean
+    default: false
+    description: Whether to setup git credentials.
   image-context:
     type: string
     default: "."
@@ -26,20 +26,20 @@ steps:
   - docker-install-cli
   - docker-configure-repo:
       registry-provider: << parameters.registry-provider >>
-  - when:
-      condition:
-        equal: ["", << parameters.build-arg >>]
+  - unless:
+      condition: << parameters.configure-git >>
       steps:
         - run:
             name: Build Docker image
             command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
-  - unless:
-      condition:
-        equal: ["", << parameters.build-arg >>]
+  - when:
+      condition: << parameters.configure-git >>
       steps:
         - run:
             name: Build Docker image
-            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >> --arg << parameters.build-arg >>
+            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+            environment:
+              NOOSCI_DOCKER_ARG: GITHUB_TOKEN
   - when:
       condition:
         equal: [aws, << parameters.registry-provider >>]
