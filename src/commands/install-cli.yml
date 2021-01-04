@@ -1,8 +1,8 @@
-description: Install locally noos-deploy sdk.
+description: Install locally noos-inv[oke] SDK.
 
 steps:
   - run:
-      name: Install noos-ci package.
-      command: pip install noos-ci==$NOOSCI_VERSION
+      name: Install noos-inv package.
+      command: pip install noos-inv==$NOOSINV_VERSION
       environment:
-        NOOSCI_VERSION: 0.0.4
+        NOOSINV_VERSION: 0.0.5
