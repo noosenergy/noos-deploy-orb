@@ -36,7 +36,9 @@ jobs:
           command: cp -R ./fixtures/python/* .
       - noos-ci/python-lint-package:
           pkg-manager: pipenv
+          install-args: "--dev"
           configure-git: false
+          src-directory: "./src"
 
   integration-test_python-test-package:
     executor: noos-ci/default
@@ -47,17 +49,21 @@ jobs:
           command: cp -R ./fixtures/python/* .
       - noos-ci/python-test-package:
           pkg-manager: pipenv
+          install-args: "--dev"
           configure-git: false
+          tests-directory: "./src/tests"
 
-  integration-test_docker-build-image:
+  integration-test_python-build-wheel:
     executor: noos-ci/default
     steps:
       - checkout
-      - noos-ci/docker-build-image:
-          registry-provider: docker
-          image-context: ./fixtures/docker
-          image-name: busybox
-          image-tag: ${CIRCLE_SHA1}
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-build-wheel:
+          pkg-manager: pipenv
+          install-args: "--dev"
+          configure-git: false
 
   integration-test_helm-lint-chart:
     executor: noos-ci/default
@@ -72,6 +78,17 @@ jobs:
       - checkout
       - noos-ci/helm-build-chart:
           chart-directory: ./fixtures/helm
+
+  integration-test_docker-build-image:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/docker-build-image:
+          registry-provider: docker
+          configure-git: false
+          image-context: ./fixtures/docker
+          image-name: busybox
+          image-tag: ${CIRCLE_SHA1}
 
   integration-test_terraform-run-plan:
     executor: noos-ci/default
@@ -124,10 +141,11 @@ workflows:
     jobs:
       - integration-test_python-lint-package
       - integration-test_python-test-package
-      - integration-test_docker-build-image:
-          context: CIRCLECI_SHARED
+      - integration-test_python-build-wheel
       - integration-test_helm-lint-chart
       - integration-test_helm-build-chart:
+          context: CIRCLECI_SHARED
+      - integration-test_docker-build-image:
           context: CIRCLECI_SHARED
       - integration-test_terraform-run-plan:
           context: NOOS_PROD_SHARED
