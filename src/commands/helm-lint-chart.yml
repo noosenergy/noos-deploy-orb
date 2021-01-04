@@ -11,4 +11,4 @@ steps:
   - helm-install-cli
   - run:
       name: Lint Helm chart
-      command: noosci helm.lint --chart << parameters.chart-directory >>
+      command: noosinv helm.lint --chart << parameters.chart-directory >>
