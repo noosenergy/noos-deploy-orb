@@ -6,16 +6,25 @@ parameters:
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
+  install-args:
+    type: string
+    default: "--dev"
+    description: Arguments to pass to the install command.
   configure-git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  src-directory:
+    type: string
+    default: "./src"
+    description: Package source directory.
 
 steps:
   - install-cli
   - python-install-venv:
       pkg-manager: << parameters.pkg-manager >>
+      install-args: << parameters.install-args >>
       configure-git: << parameters.configure-git >>
   - run:
       name: Run Python linters
-      command: noosci python.lint --install << parameters.pkg-manager >>
+      command: noosinv python.lint --source << parameters.src-directory >> --install << parameters.pkg-manager >>

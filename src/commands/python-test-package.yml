@@ -6,11 +6,19 @@ parameters:
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
+  install-args:
+    type: string
+    default: "--dev"
+    description: Arguments to pass to the install command.
   configure-git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
-  test-group:
+  tests-directory:
+    type: string
+    default: "./src/tests"
+    description: Package tests directory.
+  tests-group:
     type: enum
     enum: ["", "unit", "integration", "functional"]
     default: ""
@@ -20,18 +28,8 @@ steps:
   - install-cli
   - python-install-venv:
       pkg-manager: << parameters.pkg-manager >>
+      install-args: << parameters.install-args >>
       configure-git: << parameters.configure-git >>
-  - when:
-      condition:
-        equal: ["", << parameters.test-group >>]
-      steps:
-        - run:
-            name: Run Python tests
-            command: noosci python.test --install << parameters.pkg-manager >>
-  - unless:
-      condition:
-        equal: ["", << parameters.test-group >>]
-      steps:
-        - run:
-            name: Run Python tests
-            command: noosci python.test --group << parameters.test-group >> --install << parameters.pkg-manager >>
+  - run:
+      name: Run Python tests
+      command: noosinv python.test --tests << parameters.tests-directory >> --group '<< parameters.tests-group >>' --install << parameters.pkg-manager >>
