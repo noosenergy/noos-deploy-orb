@@ -15,16 +15,16 @@ steps:
         - aws-cli/install
         - run:
             name: Configure AWS ECR registry
-            command: noosci docker.login --user AWS
+            command: noosinv docker.login --user AWS
             environment:
-              NOOSCI_DOCKER_REPO: $AWS_ECR_URL
+              NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
       condition:
         equal: [docker, << parameters.registry-provider >>]
       steps:
         - run:
             name: Configure Dockerhub registry
-            command: noosci docker.login
+            command: noosinv docker.login
             environment:
-              NOOSCI_DOCKER_USER: $DOCKERHUB_USER
-              NOOSCI_DOCKER_TOKEN: $DOCKERHUB_TOKEN
+              NOOSINV_DOCKER_USER: $DOCKERHUB_USER
+              NOOSINV_DOCKER_TOKEN: $DOCKERHUB_TOKEN

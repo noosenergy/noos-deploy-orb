@@ -31,30 +31,30 @@ steps:
       steps:
         - run:
             name: Build Docker image
-            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+            command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
   - when:
       condition: << parameters.configure-git >>
       steps:
         - run:
             name: Build Docker image
-            command: noosci docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+            command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
             environment:
-              NOOSCI_DOCKER_ARG: GITHUB_TOKEN
+              NOOSINV_DOCKER_ARG: GITHUB_TOKEN
   - when:
       condition:
         equal: [aws, << parameters.registry-provider >>]
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosci docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
+            command: noosinv docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
             environment:
-              NOOSCI_DOCKER_REPO: $AWS_ECR_URL
+              NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
       condition:
         equal: [docker, << parameters.registry-provider >>]
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosci docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
+            command: noosinv docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
             environment:
-              NOOSCI_DOCKER_REPO: $DOCKERHUB_USER
+              NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
