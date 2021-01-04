@@ -14,23 +14,36 @@ usage:
         - checkout
         - noos-ci/python-lint-package:
             pkg-manager: pipenv
+            install-args: "--dev"
             configure-git: false
+            src-directory: "./src"
     test-package:
       executor: noos-ci/default
       steps:
         - checkout
         - noos-ci/python-test-package:
             pkg-manager: pipenv
+            install-args: "--dev"
             configure-git: false
-            test-group: unit
+            tests-directory: "./tests"
+    build-wheel:
+      executor: noos-ci/default
+      steps:
+        - checkout
+        - noos-ci/python-build-wheel:
+            pkg-manager: pipenv
+            install-args: "--dev"
+            configure-git: false
 
   workflows:
-    lint-test:
+    lint-test-build:
       jobs:
         - lint-package
-        - test-package:
+        - test-package
+        - build-wheel:
             requires:
               - lint-package
+              - test-package
             filters:
               branches:
                 only: master

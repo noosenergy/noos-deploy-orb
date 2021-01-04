@@ -8,7 +8,7 @@ Custom CircleCI Orb for working with Docker and Helm CI/CD pipelines.
 
 [CI/CD Noos CircleCI Orb](https://circleci.com/developer/orbs/orb/noosenergy/noos-ci) - The official registry page of this orb for all versions, executors, commands, and jobs described.
 
-[CI/CD Noos Deploy SDK](https://pypi.org/project/noos-ci) - Software development kit for managing CI/CD pipelines, shipped with this orb.
+[CI/CD Noos Invoke SDK](https://pypi.org/project/noos-inv) - Software development kit for managing CI/CD pipelines, shipped with this orb.
 
 ### How to Contribute
 
