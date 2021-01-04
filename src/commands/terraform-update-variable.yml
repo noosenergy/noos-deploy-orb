@@ -16,7 +16,7 @@ steps:
   - terraform-install-cli
   - run:
       name: Update a Terraform variable
-      command: noosci terraform.update --workspace << parameters.workspace >> --variable << parameters.variable-name >> --value << parameters.variable-value >>
+      command: noosinv terraform.update --workspace << parameters.workspace >> --variable << parameters.variable-name >> --value << parameters.variable-value >>
       environment:
-        NOOSCI_TERRAFORM_ORGANISATION: $TERRAFORM_USER
-        NOOSCI_TERRAFORM_TOKEN: $TERRAFORM_TOKEN
+        NOOSINV_TERRAFORM_ORGANISATION: $TERRAFORM_USER
+        NOOSINV_TERRAFORM_TOKEN: $TERRAFORM_TOKEN
