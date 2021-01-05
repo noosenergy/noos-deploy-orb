@@ -6,6 +6,10 @@ parameters:
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
+  install-args:
+    type: string
+    default: "--dev"
+    description: Arguments to pass to the install command.
   configure-git:
     type: boolean
     default: false
@@ -17,9 +21,9 @@ steps:
       steps:
         - run:
             name: Configure Github access
-            command: noosci git.config
+            command: noosinv git.config
             environment:
-              NOOSCI_GIT_TOKEN: $GITHUB_TOKEN
+              NOOSINV_GIT_TOKEN: $GITHUB_TOKEN
   - when:
       condition:
         equal: [pipenv, << parameters.pkg-manager >>]
@@ -32,7 +36,7 @@ steps:
         - run:
             name: Install Python packages
             command: |
-              pipenv sync --dev
+              pipenv sync << parameters.install-args >>
               pipenv clean
         - save_cache:
             key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
@@ -49,7 +53,7 @@ steps:
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
-            command: poetry install
+            command: poetry install << parameters.install-args >>
         - save_cache:
             key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
             paths:

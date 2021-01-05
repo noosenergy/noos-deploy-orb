@@ -6,6 +6,10 @@ parameters:
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
+  install-args:
+    type: string
+    default: "--dev"
+    description: Arguments to pass to the install command.
   configure-git:
     type: boolean
     default: false
@@ -15,7 +19,8 @@ steps:
   - install-cli
   - python-install-venv:
       pkg-manager: << parameters.pkg-manager >>
+      install-args: << parameters.install-args >>
       configure-git: << parameters.configure-git >>
   - run:
       name: Build Python wheel
-      command: noosci python.package --install << parameters.pkg-manager >>
+      command: noosinv python.package --install << parameters.pkg-manager >>
