@@ -51,3 +51,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Bump `noos-inv` CLI version to v0.0.5.
 ### Added
  - Pass install arguments for the Python venv installation.
+
+## [0.1.8] - 2021-01-05
+### Changed
+ - Bump `pipenv` CLI version to v20.11.4.
+ - Bump `poetry` CLI version to v1.1.4.
