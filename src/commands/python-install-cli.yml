@@ -1,0 +1,9 @@
+description: Install locally Python package managers.
+
+steps:
+  - run:
+      name: Install pipenv/poetry packages.
+      command: pip install pipenv==$PIPENV_RELEASE poetry==$POETRY_RELEASE
+      environment:
+        PIPENV_RELEASE: 2020.6.2
+        POETRY_RELEASE: 1.1.4

@@ -21,7 +21,8 @@ parameters:
 
 steps:
   - install-cli
-  - python-install-venv:
+  - python-install-cli
+  - python-configure-venv:
       pkg-manager: << parameters.pkg-manager >>
       install-args: << parameters.install-args >>
       configure-git: << parameters.configure-git >>
