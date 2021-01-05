@@ -1,13 +1,10 @@
+# https://hub.docker.com/r/cimg/python
+# https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/python/images
+
 description: Preconfigured CircleCI Python image.
 
-parameters:
-  tag:
-    type: string
-    default: "3.7.6"
-    description: The `circleci/python` Docker image version tag.
-
 docker:
-  - image: circleci/python:<< parameters.tag >>
+  - image: cimg/python:3.8.6
     environment:
       POETRY_VIRTUALENVS_IN_PROJECT: true
       PIPENV_VENV_IN_PROJECT: true
