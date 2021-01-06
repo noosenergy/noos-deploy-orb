@@ -4,7 +4,7 @@ verify_ssl = true
 name = "pypi"
 
 [requires]
-python_version = "3.7"
+python_version = "3.8"
 
 [pipenv]
 allow_prereleases = true
@@ -14,8 +14,6 @@ allow_prereleases = true
 [dev-packages]
 # Symlink to project root
 noos-test = {editable = true, path = "."}
-# Provisionning
-noos-ci = "0.0.1a5"
 # Format
 black = "*"
 isort = "*"
