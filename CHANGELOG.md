@@ -54,9 +54,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [0.1.8] - 2021-01-05
 ### Changed
- - Bump `pipenv` CLI version to v20.11.4.
+ - Bump `pipenv` CLI version to v2020.11.15.
  - Bump `poetry` CLI version to v1.1.4.
 
 ## [0.1.9] - 2021-01-06
 ### Changed
  - Bump Python version to v3.8.6.
+
+## [0.1.10] - 2021-01-08
+### Changed
+ - Downgrade `pipenv` CLI version to v2020.11.4.
