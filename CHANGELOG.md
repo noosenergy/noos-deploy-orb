@@ -64,3 +64,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.10] - 2021-01-08
 ### Changed
  - Downgrade `pipenv` CLI version to v2020.11.4.
+
+## [0.1.11] - 2021-01-21
+### Changed
+ - Bump `noos-tf` CLI version to v0.0.6 (py38).
+ - Bump `noos-inv` CLI version to v0.0.6 (py38).
