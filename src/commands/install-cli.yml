@@ -5,4 +5,4 @@ steps:
       name: Install noos-inv package.
       command: pip install noos-inv==$NOOSINV_VERSION
       environment:
-        NOOSINV_VERSION: 0.0.5
+        NOOSINV_VERSION: 0.0.6
