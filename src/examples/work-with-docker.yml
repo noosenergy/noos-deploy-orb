@@ -16,6 +16,7 @@ usage:
             registry-provider: aws
             configure-git: false
             image-context: .
+            image-file: ./docker/Dockerfile
             image-name: webserver
             image-tag: test
 

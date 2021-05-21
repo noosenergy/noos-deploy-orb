@@ -14,6 +14,10 @@ parameters:
     type: string
     default: "."
     description: Docker local build context.
+  image-file:
+    type: string
+    default: ""
+    description: Docker local Dockerfile.
   image-name:
     type: string
     description: Docker local image name.
@@ -29,17 +33,41 @@ steps:
   - unless:
       condition: << parameters.configure-git >>
       steps:
-        - run:
-            name: Build Docker image
-            command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+        - when:
+            condition:
+              equal: ["", << parameters.image-file >>]
+            steps:
+              - run:
+                  name: Build Docker image
+                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+        - unless:
+            condition:
+              equal: ["", << parameters.image-file >>]
+            steps:
+              - run:
+                  name: Build Docker image
+                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >> --file << parameters.image-file >>
   - when:
       condition: << parameters.configure-git >>
       steps:
-        - run:
-            name: Build Docker image
-            command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
-            environment:
-              NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+        - when:
+            condition:
+              equal: ["", << parameters.image-file >>]
+            steps:
+              - run:
+                  name: Build Docker image
+                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+                  environment:
+                    NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+        - unless:
+            condition:
+              equal: ["", << parameters.image-file >>]
+            steps:
+              - run:
+                  name: Build Docker image
+                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >> --file << parameters.image-file >>
+                  environment:
+                    NOOSINV_DOCKER_ARG: GITHUB_TOKEN
   - when:
       condition:
         equal: [aws, << parameters.registry-provider >>]
