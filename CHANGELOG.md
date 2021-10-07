@@ -74,3 +74,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - Bump `noos-inv` CLI version to v0.0.7.
  - Pass optional `--file` argument to command docker.build.
+
+## [0.1.13] - 2021-10-07
+### Changed
+ - Bump `noos-inv` CLI version to v0.0.8.
