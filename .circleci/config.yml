@@ -8,7 +8,7 @@ version: 2.1
 orbs:
 
   noos-ci: noosenergy/noos-ci@<<pipeline.parameters.dev-orb-version>>
-  orb-tools: circleci/orb-tools@10.0.3
+  orb-tools: circleci/orb-tools@10.0
 
 parameters:
 
