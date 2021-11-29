@@ -4,9 +4,6 @@
 description: Preconfigured CircleCI Python image.
 
 docker:
-  - image: cimg/python:3.8.6
-    environment:
-      POETRY_VIRTUALENVS_IN_PROJECT: true
-      PIPENV_VENV_IN_PROJECT: true
+  - image: noosenergy/circleci:latest
 
 working_directory: "~/project"
