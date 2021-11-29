@@ -14,17 +14,25 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  slack-alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
 
 steps:
-  - install-cli
-  - python-install-cli
   - python-configure-venv:
       pkg-manager: << parameters.pkg-manager >>
       install-args: << parameters.install-args >>
       configure-git: << parameters.configure-git >>
   - run:
       name: Publish Python wheel
-      command: noosinv python.package --install << parameters.pkg-manager >>
+      command: noosinv python.release --install << parameters.pkg-manager >>
       environment:
         NOOSINV_PYTHON_USER: $PYPI_USER
         NOOSINV_PYTHON_TOKEN: $PYPI_TOKEN
+  - when:
+      condition: << parameters.slack-alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1

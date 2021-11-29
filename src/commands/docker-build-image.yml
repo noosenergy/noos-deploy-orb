@@ -24,9 +24,12 @@ parameters:
   image-tag:
     type: string
     description: Docker remote image tag.
+  slack-alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
 
 steps:
-  - install-cli
   - docker-install-cli
   - docker-configure-repo:
       registry-provider: << parameters.registry-provider >>
@@ -86,3 +89,9 @@ steps:
             command: noosinv docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
             environment:
               NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
+  - when:
+      condition: << parameters.slack-alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1

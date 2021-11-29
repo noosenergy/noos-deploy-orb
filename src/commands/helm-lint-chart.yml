@@ -7,7 +7,6 @@ parameters:
     description: Unpackaged Helm chart directory.
 
 steps:
-  - install-cli
   - helm-install-cli
   - run:
       name: Lint Helm chart

@@ -20,8 +20,6 @@ parameters:
     description: Package source directory.
 
 steps:
-  - install-cli
-  - python-install-cli
   - python-configure-venv:
       pkg-manager: << parameters.pkg-manager >>
       install-args: << parameters.install-args >>

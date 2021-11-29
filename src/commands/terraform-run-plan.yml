@@ -9,8 +9,6 @@ parameters:
     description: Terraform Cloud plan message.
 
 steps:
-  - install-cli
-  - terraform-install-cli
   - run:
       name: Run a Terraform plan
       command: noosinv terraform.run --workspace << parameters.workspace >> --message << parameters.plan-message >>

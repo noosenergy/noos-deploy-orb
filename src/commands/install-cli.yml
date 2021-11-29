@@ -1,8 +1,0 @@
-description: Install locally noos-inv[oke] SDK.
-
-steps:
-  - run:
-      name: Install noos-inv package.
-      command: pip install noos-inv==$NOOSINV_VERSION
-      environment:
-        NOOSINV_VERSION: 0.0.8
