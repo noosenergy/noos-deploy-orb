@@ -14,6 +14,10 @@ parameters:
     type: boolean
     default: false
     description: Whether to setup git credentials.
+  slack-alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
 
 steps:
   - python-configure-venv:
@@ -26,3 +30,9 @@ steps:
       environment:
         NOOSINV_PYTHON_USER: $PYPI_USER
         NOOSINV_PYTHON_TOKEN: $PYPI_TOKEN
+  - when:
+      condition: << parameters.slack-alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1

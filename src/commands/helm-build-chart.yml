@@ -5,6 +5,10 @@ parameters:
     type: string
     default: "./helm/chart"
     description: Unpackaged Helm chart directory.
+  slack-alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
 
 steps:
   - helm-install-cli
@@ -12,3 +16,9 @@ steps:
   - run:
       name: Build and push Helm charts
       command: noosinv helm.push --chart << parameters.chart-directory >>
+  - when:
+      condition: << parameters.slack-alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1
