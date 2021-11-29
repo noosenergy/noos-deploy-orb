@@ -1,8 +1,0 @@
-description: Install locally noos-terraform client.
-
-steps:
-  - run:
-      name: Install noos-tf package.
-      command: pip install noos-tf==$NOOSTF_VERSION
-      environment:
-        NOOSTF_VERSION: 0.0.6

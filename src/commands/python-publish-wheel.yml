@@ -16,8 +16,6 @@ parameters:
     description: Whether to setup git credentials.
 
 steps:
-  - install-cli
-  - python-install-cli
   - python-configure-venv:
       pkg-manager: << parameters.pkg-manager >>
       install-args: << parameters.install-args >>

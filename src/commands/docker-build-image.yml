@@ -26,7 +26,6 @@ parameters:
     description: Docker remote image tag.
 
 steps:
-  - install-cli
   - docker-install-cli
   - docker-configure-repo:
       registry-provider: << parameters.registry-provider >>
