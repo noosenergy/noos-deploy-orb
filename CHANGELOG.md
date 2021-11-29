@@ -78,3 +78,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.1.13] - 2021-10-07
 ### Changed
  - Bump `noos-inv` CLI version to v0.0.8.
+
+## [0.1.14] - 2021-11-29
+### Changed
+ - Switch orb executor to custom CircleCI Docker image (repo `noosenergy/circleci`).
+### Added
+ - Trigger Slack notifications on failed PyPi/Docker/Helm builds.
