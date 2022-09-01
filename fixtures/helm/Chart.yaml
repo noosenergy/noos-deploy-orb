@@ -1,6 +1,5 @@
 apiVersion: v2
 name: noos-test
 version: 0.0.1
-appVersion: 0.0.1
 type: application
 description: Test chart for orb helm jobs
