@@ -84,3 +84,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Switch orb executor to custom CircleCI Docker image (repo `noosenergy/circleci`).
 ### Added
  - Trigger Slack notifications on failed PyPi/Docker/Helm builds.
+
+## [0.1.15] - 2022-09-01
+### Changed
+ - Bump Docker CLI to v20.10.14.
+ - Bump Helm CLI to v3.9.0.
+### Added
+ - Publish Helm chart to either Chart Museum or AWS ECR registries.
