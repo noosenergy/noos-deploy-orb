@@ -1,13 +1,34 @@
-description: Configure Helm remote registry [Chart Museum].
+description: Configure Helm remote registry [AWS ECR or Chart Museum].
+
+parameters:
+  registry-provider:
+    type: enum
+    enum: ["aws", "cm"]
+    default: "aws"
+    description: Helm registry provider.
 
 steps:
-  - run:
-      name: Provision Helm client
-      command: noosinv helm.install
-  - run:
-      name: Configure Helm registry
-      command: noosinv helm.login
-      environment:
-        NOOSINV_HELM_URL: $CHARTMUSEUM_URL
-        NOOSINV_HELM_USER: $CHARTMUSEUM_USER
-        NOOSINV_HELM_TOKEN: $CHARTMUSEUM_TOKEN
+  - when:
+      condition:
+        equal: [aws, << parameters.registry-provider >>]
+      steps:
+        - aws-cli/install
+        - run:
+            name: Configure Helm registry
+            command: noosinv helm.login
+            environment:
+              NOOSINV_HELM_REPO: $AWS_ECR_URL
+  - when:
+      condition:
+        equal: [cm, << parameters.registry-provider >>]
+      steps:
+        - run:
+            name: Provision Helm client
+            command: noosinv helm.install
+        - run:
+            name: Configure Helm registry
+            command: noosinv helm.login
+            environment:
+              NOOSINV_HELM_URL: $CHARTMUSEUM_URL
+              NOOSINV_HELM_USER: $CHARTMUSEUM_USER
+              NOOSINV_HELM_TOKEN: $CHARTMUSEUM_TOKEN
