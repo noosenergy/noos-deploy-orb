@@ -15,7 +15,7 @@ steps:
         - aws-cli/install
         - run:
             name: Configure AWS ECR registry
-            command: noosinv docker.login --user AWS
+            command: noosinv docker.login
             environment:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
