@@ -19,6 +19,7 @@ usage:
       steps:
         - checkout
         - noos-ci/helm-build-chart:
+            registry-provider: cm
             chart-directory: ./helm/chart
 
   workflows:

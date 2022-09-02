@@ -1,10 +1,23 @@
-description: Build and push Helm chart to remote registry [Chart Museum].
+description: Build and push Helm chart to remote registry [AWS ECR or Chart Museum].
 
 parameters:
+  registry-provider:
+    type: enum
+    enum: ["aws", "cm"]
+    default: "aws"
+    description: Helm registry provider
   chart-directory:
     type: string
     default: "./helm/chart"
     description: Unpackaged Helm chart directory.
+  chart-name:
+    type: string
+    default: "webserver"
+    description: Packaged Helm chart name.
+  chart-tag:
+    type: string
+    default: "0.1.0"
+    description: Packaged Helm chart tag.
   slack-alert:
     type: boolean
     default: true
@@ -12,10 +25,26 @@ parameters:
 
 steps:
   - helm-install-cli
-  - helm-configure-repo
-  - run:
-      name: Build and push Helm charts
-      command: noosinv helm.push --chart << parameters.chart-directory >>
+  - helm-configure-repo:
+      registry-provider: << parameters.registry-provider >>
+  - when:
+      condition:
+        equal: [aws, << parameters.registry-provider >>]
+      steps:
+        - run:
+            name: Build and push Helm charts
+            command: noosinv helm.push --chart << parameters.chart-directory >> --name << parameters.chart-name >> --tag << parameters.chart-tag >>
+            environment:
+              NOOSINV_HELM_REPO: $AWS_ECR_URL
+  - when:
+      condition:
+        equal: [cm, << parameters.registry-provider >>]
+      steps:
+        - run:
+            name: Build and push Helm charts
+            command: noosinv helm.push --chart << parameters.chart-directory >>
+            environment:
+              NOOSINV_HELM_USER: $CHARTMUSEUM_USER
   - when:
       condition: << parameters.slack-alert >>
       steps:
