@@ -4,6 +4,6 @@
 description: Preconfigured CircleCI Python image.
 
 docker:
-  - image: noosenergy/circleci:latest
+  - image: noosenergy/circleci:3.11.4
 
 working_directory: "~/project"
