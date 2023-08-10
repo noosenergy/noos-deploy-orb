@@ -1,3 +1,5 @@
+---
+
 description: Check compliance of Helm chart vs values.
 
 parameters:

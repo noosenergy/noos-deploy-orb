@@ -1,0 +1,111 @@
+---
+version: 2.1
+
+# ----------------
+# Orbs declaration
+# ----------------
+
+orbs:
+
+  orb-tools: circleci/orb-tools@12.0.4
+
+
+# --------------
+# Pipeline tasks
+# --------------
+
+jobs:
+
+  integration-test_python-lint-package:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-lint-package:
+          pkg-manager: pipenv
+          install-args: "--dev"
+          configure-git: false
+          src-directory: "./src"
+
+  integration-test_python-test-package:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-test-package:
+          pkg-manager: pipenv
+          install-args: "--dev"
+          configure-git: false
+          tests-directory: "./src/tests"
+
+  integration-test_python-build-wheel:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python-build-wheel:
+          pkg-manager: pipenv
+          install-args: "--dev"
+          configure-git: false
+
+  integration-test_helm-lint-chart:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/helm-lint-chart:
+          chart-directory: ./fixtures/helm
+
+  integration-test_helm-build-chart:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/helm-build-chart:
+          registry-provider: aws
+          chart-directory: ./fixtures/helm
+          chart-name: noos-prod/noos-test
+          chart-tag: 0.0.1
+
+  integration-test_docker-build-image:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/docker-build-image:
+          registry-provider: docker
+          configure-git: false
+          image-context: ./fixtures/docker
+          image-name: busybox
+          image-tag: ${CIRCLE_SHA1}
+
+  integration-test_terraform-run-plan:
+    executor: noos-ci/default
+    steps:
+      - checkout
+      - noos-ci/terraform-update-variable:
+          workspace: noos-prod
+          variable-name: noos_ci_integration_test
+          variable-value: ${CIRCLE_SHA1}
+      - noos-ci/terraform-run-plan:
+          workspace: noos-prod
+          plan-message: ${CIRCLE_BUILD_URL}
+
+
+workflows:
+  test:
+    when: << pipeline.parameters.run-integration-tests >>
+    jobs:
+      - integration-test_python-lint-package
+      - integration-test_python-test-package
+      - integration-test_python-build-wheel
+      - integration-test_helm-lint-chart
+      - integration-test_helm-build-chart:
+          context: CIRCLECI_SHARED
+      - integration-test_docker-build-image:
+          context: DOCKERHUB_SHARED
+      - integration-test_terraform-run-plan:
+          context: NOOS_PROD_SHARED

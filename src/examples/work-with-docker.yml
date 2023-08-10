@@ -1,3 +1,5 @@
+---
+
 description: Build and publish a docker image to remote registry.
 
 usage:

@@ -1,3 +1,5 @@
+---
+
 description: Spinup Python virtual environment [pipenv or poetry].
 
 parameters:
@@ -30,7 +32,8 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+              - virtualenv-{{ .Environment.CACHE_VERSION }}\
+                -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
@@ -39,7 +42,8 @@ steps:
               pipenv sync << parameters.install-args >>
               pipenv clean
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}\
+              -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             paths:
               - "./.venv"
   - when:
@@ -48,13 +52,15 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
+              - virtualenv-{{ .Environment.CACHE_VERSION }}\
+                -{{ .Branch }}-{{ checksum "poetry.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
             command: poetry install << parameters.install-args >>
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}\
+              -{{ .Branch }}-{{ checksum "poetry.lock" }}
             paths:
               - "./.venv"

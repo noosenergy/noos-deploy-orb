@@ -1,3 +1,5 @@
+---
+
 description: Build, tag and push Docker image to remote registry [AWS ECR].
 
 parameters:
@@ -42,14 +44,20 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+                  command: noosinv docker.build \
+                    --context << parameters.image-context >> \
+                    --name << parameters.image-name >>
+
         - unless:
             condition:
               equal: ["", << parameters.image-file >>]
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >> --file << parameters.image-file >>
+                  command: noosinv docker.build \
+                    --context << parameters.image-context >> \
+                    --name << parameters.image-name >> \
+                    --file << parameters.image-file >>
   - when:
       condition: << parameters.configure-git >>
       steps:
@@ -59,7 +67,9 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >>
+                  command: noosinv docker.build \
+                    --context << parameters.image-context >> \
+                    --name << parameters.image-name >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
         - unless:
@@ -68,7 +78,10 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build --context << parameters.image-context >> --name << parameters.image-name >> --file << parameters.image-file >>
+                  command: noosinv docker.build \
+                    --context << parameters.image-context >> \
+                    --name << parameters.image-name >> \
+                    --file << parameters.image-file >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
   - when:
@@ -77,7 +90,9 @@ steps:
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosinv docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
+            command: noosinv docker.push \
+              --name << parameters.image-name >> \
+              --tag << parameters.image-tag >>
             environment:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
@@ -86,7 +101,9 @@ steps:
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosinv docker.push --name << parameters.image-name >> --tag << parameters.image-tag >>
+            command: noosinv docker.push \
+              --name << parameters.image-name >> \
+              --tag << parameters.image-tag >>
             environment:
               NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
   - when:

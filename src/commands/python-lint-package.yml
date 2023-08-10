@@ -1,3 +1,5 @@
+---
+
 description: Run Python linters [black, isort, pydoc, flake8, pypy].
 
 parameters:
@@ -26,4 +28,5 @@ steps:
       configure-git: << parameters.configure-git >>
   - run:
       name: Run Python linters
-      command: noosinv python.lint --source << parameters.src-directory >> --install << parameters.pkg-manager >>
+      command: noosinv python.lint --source << parameters.src-directory >> \
+        --install << parameters.pkg-manager >>

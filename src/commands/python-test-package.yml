@@ -1,3 +1,5 @@
+---
+
 description: Run tests with optional groups [unit, integration, functional].
 
 parameters:
@@ -31,4 +33,6 @@ steps:
       configure-git: << parameters.configure-git >>
   - run:
       name: Run Python tests
-      command: noosinv python.test --tests << parameters.tests-directory >> --group '<< parameters.tests-group >>' --install << parameters.pkg-manager >>
+      command: noosinv python.test --tests << parameters.tests-directory >> \
+        --group '<< parameters.tests-group >>' \
+        --install << parameters.pkg-manager >>

@@ -1,3 +1,5 @@
+---
+
 description: Configure Docker remote registry [AWS ECR].
 
 steps:
