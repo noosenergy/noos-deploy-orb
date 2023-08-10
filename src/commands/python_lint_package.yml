@@ -3,30 +3,30 @@
 description: Run Python linters [black, isort, pydoc, flake8, pypy].
 
 parameters:
-  pkg-manager:
+  pkg_manager:
     type: enum
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
-  install-args:
+  install_args:
     type: string
     default: "--dev"
     description: Arguments to pass to the install command.
-  configure-git:
+  configure_git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
-  src-directory:
+  src_directory:
     type: string
     default: "./src"
     description: Package source directory.
 
 steps:
-  - python-configure-venv:
-      pkg-manager: << parameters.pkg-manager >>
-      install-args: << parameters.install-args >>
-      configure-git: << parameters.configure-git >>
+  - python_configure_venv:
+      pkg_manager: << parameters.pkg_manager >>
+      install_args: << parameters.install_args >>
+      configure_git: << parameters.configure_git >>
   - run:
       name: Run Python linters
-      command: noosinv python.lint --source << parameters.src-directory >>
-        --install << parameters.pkg-manager >>
+      command: noosinv python.lint --source << parameters.src_directory >>
+        --install << parameters.pkg_manager >>

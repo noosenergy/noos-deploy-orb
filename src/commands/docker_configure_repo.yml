@@ -3,7 +3,7 @@
 description: Configure Docker remote registry [AWS ECR or Dockerhub].
 
 parameters:
-  registry-provider:
+  registry_provider:
     type: enum
     enum: ["aws", "docker"]
     default: "aws"
@@ -12,7 +12,7 @@ parameters:
 steps:
   - when:
       condition:
-        equal: [aws, << parameters.registry-provider >>]
+        equal: [aws, << parameters.registry_provider >>]
       steps:
         - aws-cli/install
         - run:
@@ -22,7 +22,7 @@ steps:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
       condition:
-        equal: [docker, << parameters.registry-provider >>]
+        equal: [docker, << parameters.registry_provider >>]
       steps:
         - run:
             name: Configure Dockerhub registry

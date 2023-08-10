@@ -3,13 +3,13 @@
 description: Check compliance of Helm chart vs values.
 
 parameters:
-  chart-directory:
+  chart_directory:
     type: string
     default: "./helm/chart"
     description: Unpackaged Helm chart directory.
 
 steps:
-  - helm-install-cli
+  - helm_install_cli
   - run:
       name: Lint Helm chart
-      command: noosinv helm.lint --chart << parameters.chart-directory >>
+      command: noosinv helm.lint --chart << parameters.chart_directory >>

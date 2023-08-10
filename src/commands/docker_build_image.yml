@@ -3,111 +3,111 @@
 description: Build, tag and push Docker image to remote registry [AWS ECR].
 
 parameters:
-  registry-provider:
+  registry_provider:
     type: enum
     enum: ["aws", "docker"]
     default: "aws"
     description: Docker registry provider.
-  configure-git:
+  configure_git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
-  image-context:
+  image_context:
     type: string
     default: "."
     description: Docker local build context.
-  image-file:
+  image_file:
     type: string
     default: ""
     description: Docker local Dockerfile.
-  image-name:
+  image_name:
     type: string
     description: Docker local image name.
-  image-tag:
+  image_tag:
     type: string
     description: Docker remote image tag.
-  slack-alert:
+  slack_alert:
     type: boolean
     default: true
     description: Whether to send a Slack on failure.
 
 steps:
-  - docker-install-cli
-  - docker-configure-repo:
-      registry-provider: << parameters.registry-provider >>
+  - docker_install_cli
+  - docker_configure_repo:
+      registry_provider: << parameters.registry_provider >>
   - unless:
-      condition: << parameters.configure-git >>
+      condition: << parameters.configure_git >>
       steps:
         - when:
             condition:
-              equal: ["", << parameters.image-file >>]
+              equal: ["", << parameters.image_file >>]
             steps:
               - run:
                   name: Build Docker image
                   command: noosinv docker.build
-                    --context << parameters.image-context >>
-                    --name << parameters.image-name >>
+                    --context << parameters.image_context >>
+                    --name << parameters.image_name >>
 
         - unless:
             condition:
-              equal: ["", << parameters.image-file >>]
+              equal: ["", << parameters.image_file >>]
             steps:
               - run:
                   name: Build Docker image
                   command: noosinv docker.build
-                    --context << parameters.image-context >>
-                    --name << parameters.image-name >>
-                    --file << parameters.image-file >>
+                    --context << parameters.image_context >>
+                    --name << parameters.image_name >>
+                    --file << parameters.image_file >>
   - when:
-      condition: << parameters.configure-git >>
+      condition: << parameters.configure_git >>
       steps:
         - when:
             condition:
-              equal: ["", << parameters.image-file >>]
+              equal: ["", << parameters.image_file >>]
             steps:
               - run:
                   name: Build Docker image
                   command: noosinv docker.build
-                    --context << parameters.image-context >>
-                    --name << parameters.image-name >>
+                    --context << parameters.image_context >>
+                    --name << parameters.image_name >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
         - unless:
             condition:
-              equal: ["", << parameters.image-file >>]
+              equal: ["", << parameters.image_file >>]
             steps:
               - run:
                   name: Build Docker image
                   command: noosinv docker.build
-                    --context << parameters.image-context >>
-                    --name << parameters.image-name >>
-                    --file << parameters.image-file >>
+                    --context << parameters.image_context >>
+                    --name << parameters.image_name >>
+                    --file << parameters.image_file >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
   - when:
       condition:
-        equal: [aws, << parameters.registry-provider >>]
+        equal: [aws, << parameters.registry_provider >>]
       steps:
         - run:
             name: Tag and push Docker image
             command: noosinv docker.push
-              --name << parameters.image-name >>
-              --tag << parameters.image-tag >>
+              --name << parameters.image_name >>
+              --tag << parameters.image_tag >>
             environment:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
       condition:
-        equal: [docker, << parameters.registry-provider >>]
+        equal: [docker, << parameters.registry_provider >>]
       steps:
         - run:
             name: Tag and push Docker image
             command: noosinv docker.push
-              --name << parameters.image-name >>
-              --tag << parameters.image-tag >>
+              --name << parameters.image_name >>
+              --tag << parameters.image_tag >>
             environment:
               NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
   - when:
-      condition: << parameters.slack-alert >>
+      condition: << parameters.slack_alert >>
       steps:
         - slack-msg/notify:
             event: fail

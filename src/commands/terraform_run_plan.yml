@@ -6,7 +6,7 @@ parameters:
   workspace:
     type: string
     description: Terraform Cloud workspace.
-  plan-message:
+  plan_message:
     type: string
     description: Terraform Cloud plan message.
 
@@ -14,7 +14,7 @@ steps:
   - run:
       name: Run a Terraform plan
       command: noosinv terraform.run --workspace << parameters.workspace >>
-        --message << parameters.plan-message >>
+        --message << parameters.plan_message >>
       environment:
         NOOSINV_TERRAFORM_ORGANISATION: $TERRAFORM_USER
         NOOSINV_TERRAFORM_TOKEN: $TERRAFORM_TOKEN

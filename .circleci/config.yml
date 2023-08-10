@@ -8,10 +8,7 @@ setup: true
 # ----------------
 
 orbs:
-
   orb-tools: circleci/orb-tools@12.0.4
-
-
 
 # -----------------
 # Pipeline workflow
@@ -23,24 +20,27 @@ orbs:
 workflows:
 
   # This workflow will run on every commit
-  lint-build:
+  lint_build:
     jobs:
       - orb-tools/lint
       - orb-tools/pack
-      - approve-for-testing:
+      - orb-tools/review:
+          exclude: "RC005,RC009"
+      - approve_for_testing:
           type: approval
           requires:
             - orb-tools/pack
             - orb-tools/lint
+            - orb-tools/review
       # Release dev version of orb, for testing & possible publishing.
       - orb-tools/publish:
-          vcs_type: github
+          vcs_type: << pipeline.project.type >>
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
           requires:
-            - approve-for-testing
+            - approve_for_testing
       - orb-tools/continue:
-          vcs_type: github
+          vcs_type: << pipeline.project.type >>
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
           pipeline_number: << pipeline.number >>
