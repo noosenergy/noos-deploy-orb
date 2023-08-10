@@ -9,32 +9,21 @@ setup: true
 
 orbs:
 
-  noos-ci: noosenergy/noos-ci@<<pipeline.parameters.dev-orb-version>>
   orb-tools: circleci/orb-tools@12.0.4
 
-parameters:
-
-  # Parameters required by orb-tools
-  run-integration-tests:
-    type: boolean
-    default: false
-  dev-orb-version:
-    type: string
-    default: "dev:beta"
 
 
 # -----------------
 # Pipeline workflow
 # -----------------
 
-# https://circleci.com/docs/2.0/creating-orbs/#integration-test_deploy
-# https://circleci.com/developer/orbs/orb/circleci/orb-tools
+# https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/config.yml
+# https://circleci.com/docs/testing-orbs/
 
 workflows:
 
   # This workflow will run on every commit
   lint-build:
-    unless: << pipeline.parameters.run-integration-tests >>
     jobs:
       - orb-tools/lint
       - orb-tools/pack
@@ -57,27 +46,3 @@ workflows:
           pipeline_number: << pipeline.number >>
           requires:
             - orb-tools/publish
-
-
-  # Promote dev to prod version based onto a git tag version.
-  publish:
-    jobs:
-      - approve-for-publishing:
-          type: approval
-          filters:
-            tags:
-              # ONLY git tag compliant format: e.g. `major-release-1.0.0`
-              only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
-            branches:
-              ignore: /.*/
-      - orb-tools/publish:
-          vcs_type: github
-          orb_name: noosenergy/noos-ci
-          context: CIRCLECI_ORB_SHARED
-          requires:
-            - approve-for-publishing
-          filters:
-            tags:
-              only: /^(major|minor|patch)-release-v\d+\.\d+\.\d+$/
-            branches:
-              ignore: /.*/

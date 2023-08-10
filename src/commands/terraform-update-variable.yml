@@ -16,8 +16,8 @@ parameters:
 steps:
   - run:
       name: Update a Terraform variable
-      command: noosinv terraform.update --workspace << parameters.workspace >> \
-        --variable << parameters.variable-name >> \
+      command: noosinv terraform.update --workspace << parameters.workspace >>
+        --variable << parameters.variable-name >>
         --value << parameters.variable-value >>
       environment:
         NOOSINV_TERRAFORM_ORGANISATION: $TERRAFORM_USER

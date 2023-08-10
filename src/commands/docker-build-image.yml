@@ -44,8 +44,8 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build \
-                    --context << parameters.image-context >> \
+                  command: noosinv docker.build
+                    --context << parameters.image-context >>
                     --name << parameters.image-name >>
 
         - unless:
@@ -54,9 +54,9 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build \
-                    --context << parameters.image-context >> \
-                    --name << parameters.image-name >> \
+                  command: noosinv docker.build
+                    --context << parameters.image-context >>
+                    --name << parameters.image-name >>
                     --file << parameters.image-file >>
   - when:
       condition: << parameters.configure-git >>
@@ -67,8 +67,8 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build \
-                    --context << parameters.image-context >> \
+                  command: noosinv docker.build
+                    --context << parameters.image-context >>
                     --name << parameters.image-name >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
@@ -78,9 +78,9 @@ steps:
             steps:
               - run:
                   name: Build Docker image
-                  command: noosinv docker.build \
-                    --context << parameters.image-context >> \
-                    --name << parameters.image-name >> \
+                  command: noosinv docker.build
+                    --context << parameters.image-context >>
+                    --name << parameters.image-name >>
                     --file << parameters.image-file >>
                   environment:
                     NOOSINV_DOCKER_ARG: GITHUB_TOKEN
@@ -90,8 +90,8 @@ steps:
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosinv docker.push \
-              --name << parameters.image-name >> \
+            command: noosinv docker.push
+              --name << parameters.image-name >>
               --tag << parameters.image-tag >>
             environment:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
@@ -101,8 +101,8 @@ steps:
       steps:
         - run:
             name: Tag and push Docker image
-            command: noosinv docker.push \
-              --name << parameters.image-name >> \
+            command: noosinv docker.push
+              --name << parameters.image-name >>
               --tag << parameters.image-tag >>
             environment:
               NOOSINV_DOCKER_REPO: $DOCKERHUB_USER

@@ -37,9 +37,9 @@ steps:
       steps:
         - run:
             name: Build and push Helm charts
-            command: noosinv helm.push \
-              --chart << parameters.chart-directory >> \
-              --name << parameters.chart-name >> \
+            command: noosinv helm.push
+              --chart << parameters.chart-directory >>
+              --name << parameters.chart-name >>
               --tag << parameters.chart-tag >>
             environment:
               NOOSINV_HELM_REPO: $AWS_ECR_URL

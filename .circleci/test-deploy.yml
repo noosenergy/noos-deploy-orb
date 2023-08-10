@@ -6,9 +6,15 @@ version: 2.1
 # ----------------
 
 orbs:
-
+  noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
   orb-tools: circleci/orb-tools@12.0.4
 
+release-filters: &release-filters
+  tags:
+    # ONLY git tag compliant format: e.g. `major-release-1.0.0`
+    only: /^(major|minor|patch)-release-v\[0-9]+(\.[0-9]+)*(-alpha\.[0-9]+)?/
+  branches:
+    ignore: /.*/
 
 # --------------
 # Pipeline tasks
@@ -17,7 +23,9 @@ orbs:
 jobs:
 
   integration-test_python-lint-package:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - run:
@@ -30,7 +38,9 @@ jobs:
           src-directory: "./src"
 
   integration-test_python-test-package:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - run:
@@ -43,7 +53,9 @@ jobs:
           tests-directory: "./src/tests"
 
   integration-test_python-build-wheel:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - run:
@@ -55,14 +67,18 @@ jobs:
           configure-git: false
 
   integration-test_helm-lint-chart:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - noos-ci/helm-lint-chart:
           chart-directory: ./fixtures/helm
 
   integration-test_helm-build-chart:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - noos-ci/helm-build-chart:
@@ -72,7 +88,9 @@ jobs:
           chart-tag: 0.0.1
 
   integration-test_docker-build-image:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - noos-ci/docker-build-image:
@@ -83,7 +101,9 @@ jobs:
           image-tag: ${CIRCLE_SHA1}
 
   integration-test_terraform-run-plan:
-    executor: noos-ci/default
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
     steps:
       - checkout
       - noos-ci/terraform-update-variable:
@@ -96,8 +116,7 @@ jobs:
 
 
 workflows:
-  test:
-    when: << pipeline.parameters.run-integration-tests >>
+  test-publish:
     jobs:
       - integration-test_python-lint-package
       - integration-test_python-test-package
@@ -109,3 +128,20 @@ workflows:
           context: DOCKERHUB_SHARED
       - integration-test_terraform-run-plan:
           context: NOOS_PROD_SHARED
+
+  # Promote dev to prod version based onto a git tag version.
+  publish:
+    jobs:
+      - approve-for-publishing:
+          type: approval
+          filters: *release-filters
+      - orb-tools/pack:
+          filters: *release-filters
+      - orb-tools/publish:
+          vcs_type: github
+          orb_name: noosenergy/noos-ci
+          context: CIRCLECI_ORB_SHARED
+          requires:
+            - approve-for-publishing
+            - orb-tools/pack
+          filters: *release-filters

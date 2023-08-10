@@ -4,4 +4,4 @@ description: Install Helm local client.
 
 steps:
   - helm-cli/install-helm-client:
-      version: v3.9.0
+      version: v3.12.2

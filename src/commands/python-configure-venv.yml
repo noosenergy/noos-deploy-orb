@@ -32,7 +32,7 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}\
+              - virtualenv-{{ .Environment.CACHE_VERSION }}
                 -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
@@ -42,7 +42,7 @@ steps:
               pipenv sync << parameters.install-args >>
               pipenv clean
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}\
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}
               -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             paths:
               - "./.venv"
@@ -52,7 +52,7 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}\
+              - virtualenv-{{ .Environment.CACHE_VERSION }}
                 -{{ .Branch }}-{{ checksum "poetry.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
@@ -60,7 +60,7 @@ steps:
             name: Install Python packages
             command: poetry install << parameters.install-args >>
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}\
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}
               -{{ .Branch }}-{{ checksum "poetry.lock" }}
             paths:
               - "./.venv"
