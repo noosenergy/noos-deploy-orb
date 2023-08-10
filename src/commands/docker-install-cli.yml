@@ -5,4 +5,4 @@ description: Configure Docker remote registry [AWS ECR].
 steps:
   - setup_remote_docker:
       docker_layer_caching: false
-      version: 24.0.5
+      version: 20.10.14
