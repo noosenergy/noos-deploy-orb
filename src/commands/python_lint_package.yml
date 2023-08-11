@@ -28,5 +28,6 @@ steps:
       configure_git: << parameters.configure_git >>
   - run:
       name: Run Python linters
-      command: noosinv python.lint --source << parameters.src_directory >>
+      command: noosinv python.lint
+        --source << parameters.src_directory >>
         --install << parameters.pkg_manager >>

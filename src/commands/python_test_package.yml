@@ -33,6 +33,7 @@ steps:
       configure_git: << parameters.configure_git >>
   - run:
       name: Run Python tests
-      command: noosinv python.test --tests << parameters.tests_directory >>
+      command: noosinv python.test
+        --tests << parameters.tests_directory >>
         --group '<< parameters.tests_group >>'
         --install << parameters.pkg_manager >>

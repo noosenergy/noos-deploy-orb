@@ -13,7 +13,8 @@ parameters:
 steps:
   - run:
       name: Run a Terraform plan
-      command: noosinv terraform.run --workspace << parameters.workspace >>
+      command: noosinv terraform.run
+        --workspace << parameters.workspace >>
         --message << parameters.plan_message >>
       environment:
         NOOSINV_TERRAFORM_ORGANISATION: $TERRAFORM_USER
