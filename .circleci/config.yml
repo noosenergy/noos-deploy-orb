@@ -1,6 +1,9 @@
 ---
 version: 2.1
 
+# https://circleci.com/docs/testing-orbs/
+# https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/config.yml
+
 setup: true
 
 # ----------------
@@ -10,15 +13,11 @@ setup: true
 orbs:
   orb-tools: circleci/orb-tools@12.0.4
 
-# -----------------
-# Pipeline workflow
-# -----------------
-
-# https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/config.yml
-# https://circleci.com/docs/testing-orbs/
+# ------------------
+# Pipeline workflows
+# ------------------
 
 workflows:
-
   # This workflow will run on every commit
   lint_build:
     jobs:

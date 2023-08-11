@@ -1,7 +1,7 @@
 ---
 
-# https://hub.docker.com/r/cimg/python
-# https://github.com/CircleCI-Public/circleci-dockerfiles/tree/master/python/images
+# https://hub.docker.com/r/noosenergy/circleci
+# https://github.com/noosenergy/noos-docker-images/tree/master/docker/circleci
 
 description: Preconfigured CircleCI Python image.
 

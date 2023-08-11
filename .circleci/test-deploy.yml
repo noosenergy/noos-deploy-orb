@@ -1,13 +1,8 @@
 ---
 version: 2.1
 
-# ----------------
-# Orbs declaration
-# ----------------
-
-orbs:
-  noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
-  orb-tools: circleci/orb-tools@12.0.4
+# https://circleci.com/docs/testing-orbs/
+# https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/test-deploy.yml
 
 release-filters: &release-filters
   tags:
@@ -16,12 +11,19 @@ release-filters: &release-filters
   branches:
     ignore: /.*/
 
+# ----------------
+# Orbs declaration
+# ----------------
+
+orbs:
+  orb-tools: circleci/orb-tools@12.0.4
+  noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
+
 # --------------
 # Pipeline tasks
 # --------------
 
 jobs:
-
   integration_test_python_lint_package:
     executor:
       name: noos-ci/default
@@ -114,6 +116,9 @@ jobs:
           workspace: noos-prod
           plan_message: ${CIRCLE_BUILD_URL}
 
+# ------------------
+# Pipeline workflows
+# ------------------
 
 workflows:
   test:
