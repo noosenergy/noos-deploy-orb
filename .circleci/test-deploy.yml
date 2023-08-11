@@ -121,7 +121,7 @@ jobs:
 # ------------------
 
 workflows:
-  test:
+  test-publish:
     jobs:
       - integration_test_python_lint_package
       - integration_test_python_test_package
@@ -133,10 +133,7 @@ workflows:
           context: DOCKERHUB_SHARED
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
-
-  # Promote dev to prod version based onto a git tag version.
-  publish:
-    jobs:
+      # Promote dev to prod version based onto a git tag version.
       - approve_for_publishing:
           type: approval
           filters: *release-filters
