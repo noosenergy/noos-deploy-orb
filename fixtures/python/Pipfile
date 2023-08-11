@@ -4,12 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [requires]
-python_full_version = "3.8.6"
-
-[pipenv]
-allow_prereleases = true
+python_version = "3"
 
 [packages]
+colorama = "*"
+build = "*"
 
 [dev-packages]
 # Symlink to project root

@@ -1,4 +1,4 @@
-[![CircleCI](https://circleci.com/gh/noosenergy/noos-circleci-orb.svg?style=svg&circle-token=9f3de0b8378330e0e1ff6bb296f04e31eed67d77)](https://circleci.com/gh/noosenergy/noos-circleci-orb)
+[![CircleCI](https://circleci.com/gh/noosenergy/noos-circleci-orb.svg?style=svg&circle-token=a0075b2b31e38b369f818e7bc5638ae11f5a2b61)](https://circleci.com/gh/noosenergy/noos-circleci-orb)
 
 # Noos CircleCI Orb
 

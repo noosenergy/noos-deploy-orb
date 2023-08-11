@@ -1,0 +1,33 @@
+---
+
+description: Build and publish a docker image to remote registry.
+
+usage:
+
+  version: 2.1
+
+  orbs:
+    noos-ci: noosenergy/noos-ci@0.0.1
+
+  jobs:
+    build_image:
+      executor:
+        name: noos-ci/default
+        tag: latest
+      steps:
+        - checkout
+        - noos-ci/docker_build_image:
+            registry_provider: aws
+            configure_git: false
+            image_context: .
+            image_file: ./docker/Dockerfile
+            image_name: webserver
+            image_tag: test
+
+  workflows:
+    build:
+      jobs:
+        - build_image:
+            filters:
+              branches:
+                only: master

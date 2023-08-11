@@ -1,25 +1,27 @@
+---
+
 description: Build wheel distribution [poetry or setup].
 
 parameters:
-  pkg-manager:
+  pkg_manager:
     type: enum
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
-  install-args:
+  install_args:
     type: string
     default: "--dev"
     description: Arguments to pass to the install command.
-  configure-git:
+  configure_git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
 
 steps:
-  - python-configure-venv:
-      pkg-manager: << parameters.pkg-manager >>
-      install-args: << parameters.install-args >>
-      configure-git: << parameters.configure-git >>
+  - python_configure_venv:
+      pkg_manager: << parameters.pkg_manager >>
+      install_args: << parameters.install_args >>
+      configure_git: << parameters.configure_git >>
   - run:
       name: Build Python wheel
-      command: noosinv python.package --install << parameters.pkg-manager >>
+      command: noosinv python.package --install << parameters.pkg_manager >>

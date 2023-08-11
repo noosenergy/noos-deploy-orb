@@ -1,0 +1,153 @@
+---
+version: 2.1
+
+# https://circleci.com/docs/testing-orbs/
+# https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/test-deploy.yml
+
+release-filters: &release-filters
+  tags:
+    # ONLY git tag compliant format: e.g. `major-release-1.0.0`
+    only: /[0-9]+(\.[0-9]+)*(-alpha\.[0-9]+)?/
+  branches:
+    ignore: /.*/
+
+# ----------------
+# Orbs declaration
+# ----------------
+
+orbs:
+  orb-tools: circleci/orb-tools@12.0.4
+  noos-ci: noosenergy/noos-ci@dev:<<pipeline.git.revision>>
+
+# --------------
+# Pipeline tasks
+# --------------
+
+jobs:
+  integration_test_python_lint_package:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python_lint_package:
+          pkg_manager: pipenv
+          install_args: "--dev"
+          configure_git: false
+          src_directory: "./src"
+
+  integration_test_python_test_package:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python_test_package:
+          pkg_manager: pipenv
+          install_args: "--dev"
+          configure_git: false
+          tests_directory: "./src/tests"
+
+  integration_test_python_build_wheel:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/* .
+      - noos-ci/python_build_wheel:
+          pkg_manager: pipenv
+          install_args: "--dev"
+          configure_git: false
+
+  integration_test_helm_lint_chart:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - noos-ci/helm_lint_chart:
+          chart_directory: ./fixtures/helm
+
+  integration_test_helm_build_chart:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - noos-ci/helm_build_chart:
+          registry_provider: aws
+          chart_directory: ./fixtures/helm
+          chart_name: noos-prod/noos-test
+          chart_tag: 0.0.1
+
+  integration_test_docker_build_image:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - noos-ci/docker_build_image:
+          registry_provider: docker
+          configure_git: false
+          image_context: ./fixtures/docker
+          image_name: busybox
+          image_tag: ${CIRCLE_SHA1}
+
+  integration_test_terraform_run_plan:
+    executor:
+      name: noos-ci/default
+      tag: "3.11.4"
+    steps:
+      - checkout
+      - noos-ci/terraform_update_variable:
+          workspace: noos-prod
+          variable_name: noos_ci_integration_test
+          variable_value: ${CIRCLE_SHA1}
+      - noos-ci/terraform_run_plan:
+          workspace: noos-prod
+          plan_message: ${CIRCLE_BUILD_URL}
+
+# ------------------
+# Pipeline workflows
+# ------------------
+
+workflows:
+  test:
+    jobs:
+      - integration_test_python_lint_package
+      - integration_test_python_test_package
+      - integration_test_python_build_wheel
+      - integration_test_helm_lint_chart
+      - integration_test_helm_build_chart:
+          context: CIRCLECI_SHARED
+      - integration_test_docker_build_image:
+          context: DOCKERHUB_SHARED
+      - integration_test_terraform_run_plan:
+          context: NOOS_PROD_SHARED
+
+  # Promote dev to prod version based onto a git tag version.
+  publish:
+    jobs:
+      - approve_for_publishing:
+          type: approval
+          filters: *release-filters
+      - orb-tools/pack:
+          filters: *release-filters
+          requires:
+            - approve_for_publishing
+      - orb-tools/publish:
+          vcs_type: << pipeline.project.type >>
+          orb_name: noosenergy/noos-ci
+          context: CIRCLECI_ORB_SHARED
+          requires:
+            - orb-tools/pack
+          filters: *release-filters

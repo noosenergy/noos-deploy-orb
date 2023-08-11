@@ -1,0 +1,57 @@
+---
+
+description: Run linters and tests for a Python project.
+
+usage:
+
+  version: 2.1
+
+  orbs:
+    noos-ci: noosenergy/noos-ci@0.0.1
+
+  jobs:
+    lint_package:
+      executor:
+        name: noos-ci/default
+        tag: latest
+      steps:
+        - checkout
+        - noos-ci/python_lint_package:
+            pkg_manager: pipenv
+            install_args: "--dev"
+            configure_git: false
+            src_directory: "./src"
+    test_package:
+      executor:
+        name: noos-ci/default
+        tag: latest
+      steps:
+        - checkout
+        - noos-ci/python_test_package:
+            pkg_manager: pipenv
+            install_args: "--dev"
+            configure_git: false
+            tests_directory: "./tests"
+    build_wheel:
+      executor:
+        name: noos-ci/default
+        tag: latest
+      steps:
+        - checkout
+        - noos-ci/python_build_wheel:
+            pkg_manager: pipenv
+            install_args: "--dev"
+            configure_git: false
+
+  workflows:
+    lint_test_build:
+      jobs:
+        - lint_package
+        - test_package
+        - build_wheel:
+            requires:
+              - lint-package
+              - test-package
+            filters:
+              branches:
+                only: master

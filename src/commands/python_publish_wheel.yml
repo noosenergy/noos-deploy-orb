@@ -1,37 +1,39 @@
+---
+
 description: Publish wheel distribution to PyPi [poetry ONLY].
 
 parameters:
-  pkg-manager:
+  pkg_manager:
     type: enum
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
-  install-args:
+  install_args:
     type: string
     default: "--dev"
     description: Arguments to pass to the install command.
-  configure-git:
+  configure_git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
-  slack-alert:
+  slack_alert:
     type: boolean
     default: true
     description: Whether to send a Slack on failure.
 
 steps:
-  - python-configure-venv:
-      pkg-manager: << parameters.pkg-manager >>
-      install-args: << parameters.install-args >>
-      configure-git: << parameters.configure-git >>
+  - python_configure_venv:
+      pkg_manager: << parameters.pkg_manager >>
+      install_args: << parameters.install_args >>
+      configure_git: << parameters.configure_git >>
   - run:
       name: Publish Python wheel
-      command: noosinv python.release --install << parameters.pkg-manager >>
+      command: noosinv python.release --install << parameters.pkg_manager >>
       environment:
         NOOSINV_PYTHON_USER: $PYPI_USER
         NOOSINV_PYTHON_TOKEN: $PYPI_TOKEN
   - when:
-      condition: << parameters.slack-alert >>
+      condition: << parameters.slack_alert >>
       steps:
         - slack-msg/notify:
             event: fail

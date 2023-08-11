@@ -1,3 +1,5 @@
+---
+
 description: Update a variable and run a plan in Terraform Cloud.
 
 usage:
@@ -8,22 +10,24 @@ usage:
     noos-ci: noosenergy/noos-ci@0.0.1
 
   jobs:
-    deploy-plan:
-      executor: noos-ci/default
+    deploy_plan:
+      executor:
+        name: noos-ci/default
+        tag: latest
       steps:
         - checkout
-        - noos-ci/terraform-update-variable:
+        - noos-ci/terraform_update_variable:
             workspace: myWorkspace
-            variable-name: myVariable
-            variable-value: test_value
-        - noos-ci/terraform-run-plan:
+            variable_name: myVariable
+            variable_value: test_value
+        - noos-ci/terraform_run_plan:
             workspace: myWorkspace
-            plan-message: Test Terraform plan
+            plan_message: Test Terraform plan
 
   workflows:
     build:
       jobs:
-        - deploy-plan:
+        - deploy_plan:
             filters:
               branches:
                 only: master

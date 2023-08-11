@@ -1,23 +1,25 @@
+---
+
 description: Spinup Python virtual environment [pipenv or poetry].
 
 parameters:
-  pkg-manager:
+  pkg_manager:
     type: enum
     enum: ["pipenv", "poetry"]
     default: "pipenv"
     description: Which package management tool to use.
-  install-args:
+  install_args:
     type: string
     default: "--dev"
     description: Arguments to pass to the install command.
-  configure-git:
+  configure_git:
     type: boolean
     default: false
     description: Whether to setup git credentials.
 
 steps:
   - when:
-      condition: << parameters.configure-git >>
+      condition: << parameters.configure_git >>
       steps:
         - run:
             name: Configure Github access
@@ -26,35 +28,39 @@ steps:
               NOOSINV_GIT_TOKEN: $GITHUB_TOKEN
   - when:
       condition:
-        equal: [pipenv, << parameters.pkg-manager >>]
+        equal: [pipenv, << parameters.pkg_manager >>]
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+              - virtualenv-{{ .Environment.CACHE_VERSION }}
+                -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
             command: |
-              pipenv sync << parameters.install-args >>
+              pipenv sync << parameters.install_args >>
               pipenv clean
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}
+              -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
             paths:
               - "./.venv"
   - when:
       condition:
-        equal: [poetry, << parameters.pkg-manager >>]
+        equal: [poetry, << parameters.pkg_manager >>]
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
+              - virtualenv-{{ .Environment.CACHE_VERSION }}
+                -{{ .Branch }}-{{ checksum "poetry.lock" }}
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
-            command: poetry install << parameters.install-args >>
+            command: poetry install << parameters.install_args >>
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-{{ checksum "poetry.lock" }}
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}
+              -{{ .Branch }}-{{ checksum "poetry.lock" }}
             paths:
               - "./.venv"

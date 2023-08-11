@@ -91,3 +91,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Bump Helm CLI to v3.9.0.
 ### Added
  - Publish Helm chart to either Chart Museum or AWS ECR registries.
+
+## [0.1.16] - 2023-08-10
+### Changed
+ - Bump AWS CircleCI Orb to v4.0.0.
+ - Bump Slack CircleCI Orb to v4.12.5.
+ - Bump Helm CLI to v3.12.2.
+ - Upgrade orb-tools dependency.
+### Added
+ - Put executor tag as a parameter.
+ - Add orb-tools/review job.

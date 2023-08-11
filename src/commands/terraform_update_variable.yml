@@ -1,20 +1,25 @@
+---
+
 description: Update a variable value for a workspace in Terraform Cloud.
 
 parameters:
   workspace:
     type: string
     description: Terraform Cloud workspace.
-  variable-name:
+  variable_name:
     type: string
     description: Terraform Cloud variable name.
-  variable-value:
+  variable_value:
     type: string
     description: Terraform Cloud variable value.
 
 steps:
   - run:
       name: Update a Terraform variable
-      command: noosinv terraform.update --workspace << parameters.workspace >> --variable << parameters.variable-name >> --value << parameters.variable-value >>
+      command: noosinv terraform.update
+        --workspace << parameters.workspace >>
+        --variable << parameters.variable_name >>
+        --value << parameters.variable_value >>
       environment:
         NOOSINV_TERRAFORM_ORGANISATION: $TERRAFORM_USER
         NOOSINV_TERRAFORM_TOKEN: $TERRAFORM_TOKEN
