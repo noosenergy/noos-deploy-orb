@@ -13,3 +13,6 @@ pytest.xml
 
 # MyPy
 .mypy_cache
+
+# Pyenv
+.python-version
