@@ -7,6 +7,14 @@ version: 2.1
 setup: true
 
 # ----------------
+# Filters
+# ----------------
+
+filters: &filters
+  tags:
+    only: /.*/
+
+# ----------------
 # Orbs declaration
 # ----------------
 
@@ -21,27 +29,28 @@ workflows:
   # This workflow will run on every commit
   lint_build:
     jobs:
-      - orb-tools/lint
-      - orb-tools/pack
+      - orb-tools/lint:
+          filters: *filters
+      - orb-tools/pack:
+          filters: *filters
       - orb-tools/review:
           exclude: "RC005,RC009"
+          filters: *filters
       - approve_for_testing:
           type: approval
-          requires:
-            - orb-tools/pack
-            - orb-tools/lint
-            - orb-tools/review
+          requires: [orb-tools/pack, orb-tools/lint, orb-tools/review]
+          filters: *filters
       # Release dev version of orb, for testing & possible publishing.
       - orb-tools/publish:
           vcs_type: << pipeline.project.type >>
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
-          requires:
-            - approve_for_testing
+          requires: [approve_for_testing]
+          filters: *filters
       - orb-tools/continue:
           vcs_type: << pipeline.project.type >>
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
           pipeline_number: << pipeline.number >>
-          requires:
-            - orb-tools/publish
+          requires: [orb-tools/publish]
+          filters: *filters
