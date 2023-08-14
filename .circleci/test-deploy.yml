@@ -8,10 +8,6 @@ version: 2.1
 # Filters
 # ----------------
 
-filters: &filters
-  tags:
-    only: /.*/
-
 release-filters: &release-filters
   tags:
     # ONLY git tag compliant format: e.g. `major-release-1.0.0`
@@ -131,23 +127,16 @@ jobs:
 workflows:
   test:
     jobs:
-      - integration_test_python_lint_package:
-          filters: *filters
-      - integration_test_python_test_package:
-          filters: *filters
-      - integration_test_python_build_wheel:
-          filters: *filters
-      - integration_test_helm_lint_chart:
-          filters: *filters
+      - integration_test_python_lint_package
+      - integration_test_python_test_package
+      - integration_test_python_build_wheel
+      - integration_test_helm_lint_chart
       - integration_test_helm_build_chart:
           context: CIRCLECI_SHARED
-          filters: *filters
       - integration_test_docker_build_image:
           context: DOCKERHUB_SHARED
-          filters: *filters
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
-          filters: *filters
 
   publish:
     jobs:
