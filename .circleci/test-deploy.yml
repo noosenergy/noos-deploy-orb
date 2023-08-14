@@ -3,6 +3,7 @@ version: 2.1
 
 # https://circleci.com/docs/testing-orbs/
 # https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/test-deploy.yml
+# https://circleci.com/docs/creating-orbs/#issue-a-new-release-with-the-orb-development-kit
 
 # ----------------
 # Filters
@@ -10,8 +11,8 @@ version: 2.1
 
 release-filters: &release-filters
   tags:
-    # ONLY git tag compliant format: e.g. `major-release-1.0.0`
-    only: /[0-9]+(\.[0-9]+)*(-alpha\.[0-9]+)?/
+    # Circleci compatible tag pattern
+    only: ^v[0-9]+\.[0-9]+\.[0-9]+$
   branches:
     ignore: /.*/
 
