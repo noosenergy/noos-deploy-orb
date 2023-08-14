@@ -129,7 +129,7 @@ jobs:
 # ------------------
 
 workflows:
-  test-publish:
+  test:
     jobs:
       - integration_test_python_lint_package:
           filters: *filters
@@ -148,6 +148,9 @@ workflows:
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
           filters: *filters
+
+  publish:
+    jobs:
       # Promote dev to prod version based onto a git tag version.
       - approve_for_publishing:
           type: approval
