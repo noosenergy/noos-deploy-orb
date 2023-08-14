@@ -152,4 +152,5 @@ workflows:
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
           requires: [orb-tools/pack]
+          pub_type: production
           filters: *release-filters
