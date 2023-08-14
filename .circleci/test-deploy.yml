@@ -4,6 +4,10 @@ version: 2.1
 # https://circleci.com/docs/testing-orbs/
 # https://github.com/CircleCI-Public/Orb-Template/blob/main/.circleci/test-deploy.yml
 
+# ----------------
+# Filters
+# ----------------
+
 release-filters: &release-filters
   tags:
     # ONLY git tag compliant format: e.g. `major-release-1.0.0`
@@ -134,20 +138,18 @@ workflows:
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
 
-  # Promote dev to prod version based onto a git tag version.
   publish:
     jobs:
+      # Promote dev to prod version based onto a git tag version.
       - approve_for_publishing:
           type: approval
           filters: *release-filters
       - orb-tools/pack:
           filters: *release-filters
-          requires:
-            - approve_for_publishing
+          requires: [approve_for_publishing]
       - orb-tools/publish:
           vcs_type: << pipeline.project.type >>
           orb_name: noosenergy/noos-ci
           context: CIRCLECI_ORB_SHARED
-          requires:
-            - orb-tools/pack
+          requires: [orb-tools/pack]
           filters: *release-filters
