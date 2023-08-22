@@ -30,6 +30,10 @@ parameters:
     type: boolean
     default: true
     description: Whether to send a Slack on failure.
+  tag_only:
+    type: boolean
+    default: false
+    description: Whether to tag the Docker image only.
 
 steps:
   - docker_install_cli
@@ -93,6 +97,7 @@ steps:
             command: noosinv docker.push
               --name << parameters.image_name >>
               --tag << parameters.image_tag >>
+              $(if << parameters.tag_only >>; then echo "--tag-only"; fi)
             environment:
               NOOSINV_DOCKER_REPO: $AWS_ECR_URL
   - when:
@@ -102,8 +107,9 @@ steps:
         - run:
             name: Tag and push Docker image
             command: noosinv docker.push
-              --name << parameters.image_name >>
-              --tag << parameters.image_tag >>
+                --name << parameters.image_name >>
+                --tag << parameters.image_tag >>
+                $(if << parameters.tag_only >>; then echo "--tag-only"; fi)
             environment:
               NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
   - when:

@@ -101,3 +101,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Put executor tag as a parameter.
  - Add orb-tools/review job.
+
+## [0.1.17] - 2023-08-24
+### Added
+ - Add tag_only parameter to allow pushing image to the registry with one tag only, and without the tag "latest"
+ - Add new CI job to the workflow: integration_test_docker_build_image_tag_only
