@@ -19,7 +19,7 @@ We welcome [issues](https://github.com/noosenergy/noos-circleci-orb/issues) to a
 * Create and push a branch with your new features.
 * When ready to publish a new production version, create a Pull Request from your _feature branch_ to `master`.
 * Request manual approval to run the integration tests against your _feature branch_.
-* Once your features have been merged, the final merge commit onto the `master` branch should be tagged as `<increment>-release-v<version>` where:
+* Once your features have been merged, the final merge commit onto the `master` branch should be tagged as `v<version>` where:
 
 | increment | version|
 | ----------| -----------|
