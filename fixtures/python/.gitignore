@@ -5,7 +5,6 @@ __pycache__
 build
 dist
 *.egg-info
-pip-wheel-metadata
 
 # PyTest
 .pytest_cache
