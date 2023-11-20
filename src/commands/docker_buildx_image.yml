@@ -1,0 +1,204 @@
+---
+
+description: Build, tag and push Docker image for cross platform
+ to remote registry [AWS ECR].
+
+parameters:
+  registry_provider:
+    type: enum
+    enum: ["aws", "docker"]
+    default: "aws"
+    description: Docker registry provider.
+  configure_git:
+    type: boolean
+    default: false
+    description: Whether to setup git credentials.
+  image_context:
+    type: string
+    default: "."
+    description: Docker local build context.
+  image_file:
+    type: string
+    default: ""
+    description: Docker local Dockerfile.
+  image_platform:
+    type: string
+    default: ""
+    description: Docker image platform.
+  image_name:
+    type: string
+    description: Docker local image name.
+  image_tag:
+    type: string
+    description: Docker remote image tag.
+  slack_alert:
+    type: boolean
+    default: true
+    description: Whether to send a Slack on failure.
+  tag_only:
+    type: boolean
+    default: false
+    description: Whether to tag the Docker image only.
+
+steps:
+  - docker_install_cli
+  - docker_configure_repo:
+      registry_provider: << parameters.registry_provider >>
+  - when:
+      condition:
+        equal: [aws, << parameters.registry_provider >>]
+      steps:
+        - when:
+            condition:
+              equal: ["", << parameters.image_platform >>]
+            steps:
+              - when:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $AWS_ECR_URL
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+              - unless:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --file << parameters.image_file >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $AWS_ECR_URL
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+        - unless:
+            condition:
+              equal: ["", << parameters.image_platform >>]
+            steps:
+              - when:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --platform << parameters.image_platform>>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $AWS_ECR_URL
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+              - unless:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --file << parameters.image_file >>
+                          --platform << parameters.image_platform >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $AWS_ECR_URL
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+  - when:
+      condition:
+        equal: [docker, << parameters.registry_provider >>]
+      steps:
+        - when:
+            condition:
+              equal: ["", << parameters.image_platform >>]
+            steps:
+              - when:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+              - unless:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --file << parameters.image_file >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+        - unless:
+            condition:
+              equal: ["", << parameters.image_platform >>]
+            steps:
+              - when:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --platform << parameters.image_platform >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+              - unless:
+                  condition:
+                    equal: ["", << parameters.image_file >>]
+                  steps:
+                    - run:
+                        name: Tag and push Docker image
+                        command: noosinv docker.buildx
+                          --context << parameters.image_context >>
+                          --name << parameters.image_name >>
+                          --file << parameters.image_file >>
+                          --platform << parameters.image_platform >>
+                          --tag << parameters.image_tag >>
+                          $(if << parameters.tag_only >>;
+                          then echo "--tag-only"; fi)
+                        environment:
+                          NOOSINV_DOCKER_REPO: $DOCKERHUB_USER
+                          NOOSINV_DOCKER_ARG: GITHUB_TOKEN
+  - when:
+      condition: << parameters.slack_alert >>
+      steps:
+        - slack-msg/notify:
+            event: fail
+            template: basic_fail_1
