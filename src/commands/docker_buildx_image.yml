@@ -59,6 +59,11 @@ steps:
           echo 'export NOOSINV_DOCKER_ARG=GITHUB_TOKEN' >> $BASH_ENV
         fi
   - run:
+      name: Create and use buildx builder
+      command: |
+        docker buildx create --name multi-platform-builder --use
+        docker buildx inspect --bootstrap
+  - run:
       name: Tag and push Docker image
       command: noosinv docker.buildx
         --context << parameters.image_context >>
