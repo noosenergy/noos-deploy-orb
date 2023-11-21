@@ -110,3 +110,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.0] - 2023-11-20
 ### Added
  - Add Docker buildx command for cross platform.
+
+## [0.2.1] - 2023-11-21
+### Added
+ - Simplify the buildx command using a DRY config.

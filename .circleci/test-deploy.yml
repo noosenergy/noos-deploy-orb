@@ -118,8 +118,35 @@ jobs:
           configure_git: false
           image_context: ./fixtures/docker
           image_name: busybox
-          image_tag: test
+          image_tag: tag_only
           tag_only: true
+
+  integration_test_docker_buildx_image:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/docker_buildx_image:
+          registry_provider: docker
+          configure_git: false
+          image_context: ./fixtures/docker
+          image_name: busybox
+          image_tag: test_amd64
+          image_platform: "linux/amd64"
+
+  integration_test_docker_buildx_image_multi_platform:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/docker_buildx_image:
+          registry_provider: docker
+          configure_git: false
+          image_context: ./fixtures/docker
+          image_name: busybox
+          image_tag: test_x_platform
 
   integration_test_terraform_run_plan:
     executor:
@@ -151,6 +178,10 @@ workflows:
       - integration_test_docker_build_image:
           context: DOCKERHUB_SHARED
       - integration_test_docker_build_image_tag_only:
+          context: DOCKERHUB_SHARED
+      - integration_test_docker_buildx_image:
+          context: DOCKERHUB_SHARED
+      - integration_test_docker_buildx_image_multi_platform:
           context: DOCKERHUB_SHARED
       - integration_test_terraform_run_plan:
           context: NOOS_PROD_SHARED
