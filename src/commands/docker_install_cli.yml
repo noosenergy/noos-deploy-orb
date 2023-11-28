@@ -2,7 +2,13 @@
 
 description: Configure Docker remote registry [AWS ECR].
 
+parameters:
+  layer_caching:
+    type: boolean
+    default: false
+    description: Whether to cache Docker layers.
+
 steps:
   - setup_remote_docker:
-      docker_layer_caching: false
+      docker_layer_caching: << parameters.layer_caching >>
       version: default
