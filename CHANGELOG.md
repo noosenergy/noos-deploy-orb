@@ -114,3 +114,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.1] - 2023-11-21
 ### Added
  - Simplify the buildx command using a DRY config.
+
+## [0.2.2] - 2023-11-28
+### Added
+ - Allow caching Docker intermediate layers.
