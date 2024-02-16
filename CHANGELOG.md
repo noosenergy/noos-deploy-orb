@@ -118,3 +118,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.2] - 2023-11-28
 ### Added
  - Allow caching Docker intermediate layers.
+
+## [0.2.3] - 2024-02-16
+### Added
+ - Add executor with postgres side-car container.
