@@ -38,6 +38,10 @@ parameters:
     type: boolean
     default: true
     description: Whether to send a Slack on failure.
+  no_output_timeout:
+    type: string
+    default: "10m"
+    description: Circleci no_output_timeout parameter.
 
 steps:
   - docker_install_cli:
@@ -46,6 +50,7 @@ steps:
       registry_provider: << parameters.registry_provider >>
   - run:
       name: Build Docker image
+      no_output_timeout: << parameters.no_output_timeout >>
       command: >-
         set -- "$@" --context << parameters.image_context >>
 

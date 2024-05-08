@@ -109,6 +109,7 @@ jobs:
           image_name: busybox
           image_tag: test
           image_tag_only: true
+          no_output_timeout: 15m
 
   integration_test_docker_buildx_image:
     executor:

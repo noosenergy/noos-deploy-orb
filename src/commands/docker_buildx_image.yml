@@ -44,6 +44,10 @@ parameters:
     type: boolean
     default: true
     description: Whether to send a Slack on failure.
+  no_output_timeout:
+    type: string
+    default: "10m"
+    description: Circleci no_output_timeout parameter.
 
 steps:
   - docker_install_cli:
@@ -55,6 +59,7 @@ steps:
       command: noosinv docker.configure
   - run:
       name: Build, tag and push Docker image
+      no_output_timeout: << parameters.no_output_timeout >>
       command: >-
         if [ "<< parameters.registry_provider >>" = "aws" ]; then
           export NOOSINV_DOCKER_REPO=$AWS_ECR_URL
