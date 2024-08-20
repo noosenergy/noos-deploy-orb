@@ -5,7 +5,7 @@ description: Spinup Python virtual environment [pipenv or poetry].
 parameters:
   pkg_manager:
     type: enum
-    enum: ["pipenv", "poetry"]
+    enum: ["pipenv", "poetry", "uv"]
     default: "pipenv"
     description: Which package management tool to use.
   install_args:
@@ -59,6 +59,24 @@ steps:
         - run:
             name: Install Python packages
             command: poetry install << parameters.install_args >>
+        - save_cache:
+            key: virtualenv-{{ .Environment.CACHE_VERSION }}
+              -{{ .Branch }}-{{ checksum "poetry.lock" }}
+            paths:
+              - "./.venv"
+  - when:
+      condition:
+        equal: [uv, << parameters.pkg_manager >>]
+      steps:
+        - restore_cache:
+            keys:
+              - virtualenv-{{ .Environment.CACHE_VERSION }}
+                -{{ .Branch }}-{{ checksum "uv.lock" }}
+              - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
+              - virtualenv-{{ .Environment.CACHE_VERSION }}-
+        - run:
+            name: Install Python packages
+            command: uv sync --frozen --all-extras << parameters.install_args >>
         - save_cache:
             key: virtualenv-{{ .Environment.CACHE_VERSION }}
               -{{ .Branch }}-{{ checksum "poetry.lock" }}

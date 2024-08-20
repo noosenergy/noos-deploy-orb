@@ -126,3 +126,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ## [0.2.4] - 2024-05-08
 ### Added
  - Add circleci no_output_timeout parameter for docker build image.
+
+## [0.2.5] - 2024-08-21
+### Added
+ - Add `uv` python package manager.`
