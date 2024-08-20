@@ -76,9 +76,13 @@ steps:
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
-            command: uv sync --frozen --all-extras << parameters.install_args >>
+            command: |
+              uv sync --frozen --all-extras << parameters.install_args >>
+              uv cache prune --ci
+            environment:
+              UV_CACHE_DIR: /tmp/.uv-cache
         - save_cache:
             key: virtualenv-{{ .Environment.CACHE_VERSION }}
               -{{ .Branch }}-{{ checksum "poetry.lock" }}
             paths:
-              - "./.venv"
+              - "/tmp/.uv-cache"
