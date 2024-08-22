@@ -7,7 +7,7 @@ usage:
   version: 2.1
 
   orbs:
-    noos-ci: noosenergy/noos-ci@0.0.1
+    noos-ci: noosenergy/noos-ci@0.3.0
 
   jobs:
     lint_chart:

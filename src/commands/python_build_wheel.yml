@@ -5,7 +5,7 @@ description: Build wheel distribution [poetry or setup].
 parameters:
   pkg_manager:
     type: enum
-    enum: ["pipenv", "poetry"]
+    enum: ["pipenv", "poetry", "uv"]
     default: "pipenv"
     description: Which package management tool to use.
   install_args:
