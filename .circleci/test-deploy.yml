@@ -29,7 +29,7 @@ orbs:
 # --------------
 
 jobs:
-  integration_test_python_lint_package:
+  integration_test_python_lint_package_pipenv:
     executor:
       name: noos-ci/default
       tag: latest
@@ -37,14 +37,14 @@ jobs:
       - checkout
       - run:
           name: Copy fixtures files over
-          command: cp -R ./fixtures/python/* .
+          command: cp -R ./fixtures/python/pipenv/* .
       - noos-ci/python_lint_package:
           pkg_manager: pipenv
           install_args: "--dev"
           configure_git: false
           src_directory: "./src"
 
-  integration_test_python_test_package:
+  integration_test_python_test_package_pipenv:
     executor:
       name: noos-ci/default
       tag: latest
@@ -52,14 +52,14 @@ jobs:
       - checkout
       - run:
           name: Copy fixtures files over
-          command: cp -R ./fixtures/python/* .
+          command: cp -R ./fixtures/python/pipenv/* .
       - noos-ci/python_test_package:
           pkg_manager: pipenv
           install_args: "--dev"
           configure_git: false
           tests_directory: "./src/tests"
 
-  integration_test_python_build_wheel:
+  integration_test_python_build_wheel_pipenv:
     executor:
       name: noos-ci/default
       tag: latest
@@ -67,9 +67,53 @@ jobs:
       - checkout
       - run:
           name: Copy fixtures files over
-          command: cp -R ./fixtures/python/* .
+          command: cp -R ./fixtures/python/pipenv/* .
       - noos-ci/python_build_wheel:
           pkg_manager: pipenv
+          install_args: "--dev"
+          configure_git: false
+
+  integration_test_python_lint_package_uv:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/uv/* .
+      - noos-ci/python_lint_package:
+          pkg_manager: uv
+          install_args: "--dev"
+          configure_git: false
+          src_directory: "./src"
+
+  integration_test_python_test_package_uv:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/uv/* .
+      - noos-ci/python_test_package:
+          pkg_manager: uv
+          install_args: "--dev"
+          configure_git: false
+          tests_directory: "./src/tests"
+
+  integration_test_python_build_wheel_uv:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - run:
+          name: Copy fixtures files over
+          command: cp -R ./fixtures/python/uv/* .
+      - noos-ci/python_build_wheel:
+          pkg_manager: uv
           install_args: "--dev"
           configure_git: false
 
@@ -145,9 +189,12 @@ jobs:
 workflows:
   test:
     jobs:
-      - integration_test_python_lint_package
-      - integration_test_python_test_package
-      - integration_test_python_build_wheel
+      - integration_test_python_lint_package_pipenv
+      - integration_test_python_test_package_pipenv
+      - integration_test_python_build_wheel_pipenv
+      - integration_test_python_lint_package_uv
+      - integration_test_python_test_package_uv
+      - integration_test_python_build_wheel_uv
       - integration_test_helm_lint_chart
       - integration_test_helm_build_chart:
           context: CIRCLECI_SHARED
