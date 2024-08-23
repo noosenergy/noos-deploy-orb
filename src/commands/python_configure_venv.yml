@@ -1,6 +1,6 @@
 ---
 
-description: Spinup Python virtual environment [pipenv or poetry].
+description: Spinup Python virtual environment [pipenv, poetry or uv].
 
 parameters:
   pkg_manager:
@@ -32,8 +32,8 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}
-                -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+                {{ checksum \"Pipfile.lock\" }}"
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
@@ -42,8 +42,8 @@ steps:
               pipenv sync << parameters.install_args >>
               pipenv clean
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}
-              -{{ .Branch }}-{{ checksum "Pipfile.lock" }}
+            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+              {{ checksum \"Pipfile.lock\" }}"
             paths:
               - "./.venv"
   - when:
@@ -52,16 +52,16 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}
-                -{{ .Branch }}-{{ checksum "poetry.lock" }}
+              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+                {{ checksum \"poetry.lock\" }}"
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
             name: Install Python packages
             command: poetry install << parameters.install_args >>
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}
-              -{{ .Branch }}-{{ checksum "poetry.lock" }}
+            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+              {{ checksum \"poetry.lock\" }}"
             paths:
               - "./.venv"
   - when:
@@ -70,8 +70,8 @@ steps:
       steps:
         - restore_cache:
             keys:
-              - virtualenv-{{ .Environment.CACHE_VERSION }}
-                -{{ .Branch }}-{{ checksum "uv.lock" }}
+              - "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+                {{ checksum \"uv.lock\" }}"
               - virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-
               - virtualenv-{{ .Environment.CACHE_VERSION }}-
         - run:
@@ -80,7 +80,7 @@ steps:
               uv sync --frozen << parameters.install_args >>
               uv cache prune --ci
         - save_cache:
-            key: virtualenv-{{ .Environment.CACHE_VERSION }}
-              -{{ .Branch }}-{{ checksum "uv.lock" }}
+            key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
+              {{ checksum \"uv.lock\" }}"
             paths:
               - $UV_CACHE_DIR
