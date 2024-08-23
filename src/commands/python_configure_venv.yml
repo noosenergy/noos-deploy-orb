@@ -82,4 +82,4 @@ steps:
             key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
               {{ checksum \"uv.lock\" }}"
             paths:
-              - $UV_CACHE_DIR
+              - "./.uv-cache"
