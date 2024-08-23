@@ -78,7 +78,6 @@ steps:
             name: Install Python packages
             command: |
               uv sync --frozen << parameters.install_args >>
-              uv cache prune --ci
         - save_cache:
             key: "virtualenv-{{ .Environment.CACHE_VERSION }}-{{ .Branch }}-\
               {{ checksum \"uv.lock\" }}"
