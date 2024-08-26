@@ -1,0 +1,30 @@
+---
+
+# https://hub.docker.com/r/noosenergy/circleci
+# https://github.com/noosenergy/noos-docker-images/tree/master/docker/circleci
+# https://circleci.com/developer/images/image/cimg/postgres
+
+description: Preconfigured CircleCI Python image with Timescale side-car.
+
+parameters:
+  tag:
+    type: string
+    default: latest
+  db_tag:
+    type: string
+    default: "latest-pg16"
+  db_user:
+    type: string
+    default: postgres
+  db_password:
+    type: string
+    default: postgres
+
+docker:
+  - image: noosenergy/circleci:<< parameters.tag >>
+  - image: timescale/timescaledb:<< parameters.db_tag >>
+    environment:
+      POSTGRES_USER: << parameters.db_user >>
+      POSTGRES_PASSWORD: << parameters.db_password >>
+
+working_directory: "~/project"

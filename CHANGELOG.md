@@ -127,6 +127,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
  - Add circleci no_output_timeout parameter for docker build image.
 
-## [0.2.5] - 2024-08-21
+## [0.3.0] - 2024-08-21
 ### Added
  - Add `uv` python package manager.`
+
+## [0.3.1] - 2024-08-23
+### Changed
+ - Remove `uv` CI caching strategy (ensure pre-built wheels are cached).
+ - Ensure CircleCI Python caching keys are coherent between root / branch and lock hash.
+ - Add Python executor with a Timesacle side-car container.
