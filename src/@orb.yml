@@ -9,6 +9,6 @@ display:
   source_url: https://github.com/noosenergy/noos-circleci-orb
 
 orbs:
-  aws-cli: circleci/aws-cli@4.0.0
-  helm-cli: circleci/helm@2.0.1
-  slack-msg: circleci/slack@4.12.5
+  aws-cli: circleci/aws-cli@5.1.0
+  helm-cli: circleci/helm@3.0.2
+  slack-msg: circleci/slack@5.0.0
