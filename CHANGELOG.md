@@ -136,3 +136,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
  - Remove `uv` CI caching strategy (ensure pre-built wheels are cached).
  - Ensure CircleCI Python caching keys are coherent between root / branch and lock hash.
  - Add Python executor with a Timesacle side-car container.
+
+## [0.3.2] - 2024-10-07
+### Changed
+ - Upgrade native Circle Orbs for AWS, Helm and Slack.
+ - Upgrade Helm CLI to v3.16.1.
