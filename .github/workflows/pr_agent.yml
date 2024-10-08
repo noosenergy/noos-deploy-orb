@@ -7,4 +7,3 @@ on:
 jobs:
   trigger_pr_agent:
     uses: ./.github/workflows/pr_agent_template.yml
-    secrets: inherit
