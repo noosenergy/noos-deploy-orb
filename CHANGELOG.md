@@ -141,3 +141,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
  - Upgrade native Circle Orbs for AWS, Helm and Slack.
  - Upgrade Helm CLI to v3.16.1.
+
+## [0.4.0] - 2024-10-09
+### Added
+ - Add AI PR Agent.
+ - Add github command to post a comment in a PR.
