@@ -9,12 +9,18 @@ version: 2.1
 # Filters
 # ----------------
 
-release-filters: &release-filters
-  tags:
-    # Circleci compatible tag pattern
-    only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
-  branches:
-    ignore: /.*/
+release_filters: &release_filters
+  filters:
+    tags:
+      # Circleci compatible tag pattern
+      only: /^v[0-9]+\.[0-9]+\.[0-9]+$/
+    branches:
+      ignore: /.*/
+
+filters_non_master_only: &filter_non_master_only
+  filters:
+    branches:
+      ignore: master
 
 # ----------------
 # Orbs declaration
@@ -182,6 +188,14 @@ jobs:
           workspace: noos-prod
           plan_message: ${CIRCLE_BUILD_URL}
 
+  integration_test_github_post_comment:
+    executor:
+      name: noos-ci/default
+      tag: latest
+    steps:
+      - checkout
+      - noos-ci/github_post_comment
+
 # ------------------
 # Pipeline workflows
 # ------------------
@@ -196,6 +210,9 @@ workflows:
       - integration_test_python_test_package_uv
       - integration_test_python_build_wheel_uv
       - integration_test_helm_lint_chart
+      - integration_test_github_post_comment:
+          context: CODIUM_SHARED
+          <<: *filter_non_master_only
       - integration_test_helm_build_chart:
           context: CIRCLECI_SHARED
       - integration_test_docker_build_image:
@@ -210,9 +227,9 @@ workflows:
       # Promote dev to prod version based onto a git tag version.
       - approve_for_publishing:
           type: approval
-          filters: *release-filters
+          <<: *release_filters
       - orb-tools/pack:
-          filters: *release-filters
+          <<: *release_filters
           requires: [approve_for_publishing]
       - orb-tools/publish:
           vcs_type: << pipeline.project.type >>
@@ -220,4 +237,4 @@ workflows:
           context: CIRCLECI_ORB_SHARED
           requires: [orb-tools/pack]
           pub_type: production
-          filters: *release-filters
+          <<: *release_filters
